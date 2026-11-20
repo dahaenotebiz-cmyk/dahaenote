@@ -46,6 +46,12 @@ h1{font-size:27px;font-weight:900;margin-top:10px;line-height:1.35}
 details.help{margin-top:8px;background:#F5F9FE;border-radius:12px;padding:10px 12px}
 details.help summary{font-size:13px;color:#2F6FD0;font-weight:700;cursor:pointer}
 details.help ul{margin:8px 0 2px 18px;font-size:13px;color:#4F6680;line-height:1.7}
+.nolist{margin-top:12px;background:#F8FBFF;border:1px solid #E1ECF7;border-radius:14px;padding:14px}
+.nh{font-size:14px;font-weight:900;color:#C2410C}.nh.ok{color:#1F5FBF;margin-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chips span{background:#FFF1EA;color:#9A3412;border-radius:999px;padding:5px 10px;font-size:12.5px;font-weight:500}
+.chips.ok span{background:#EAF2FD;color:#1F4E8C}
+.nnote{font-size:12px;color:#7C90A6;margin-top:12px;line-height:1.6}
 .res{background:#0B3D66;color:#fff;border-radius:22px;padding:22px 20px;margin-top:18px;box-shadow:0 14px 30px rgba(11,61,102,.25)}
 .res .k{font-size:14px;color:#BFD6EE}
 .res .big{font-size:38px;font-weight:900;margin-top:2px;letter-spacing:-.5px}
@@ -77,7 +83,7 @@ details.help ul{margin:8px 0 2px 18px;font-size:13px;color:#4F6680;line-height:1
 .why .off{color:#7C90A6}
 .list{margin:6px 0 0 18px;font-size:14px;line-height:1.85;color:#34506E}
 .cta{margin-top:18px;background:#fff;border:2px solid #0B3D66;border-radius:20px;padding:20px 18px}
-.cta b{font-size:17px;color:#0B3D66;line-height:1.45;display:block}
+.cta > b{font-size:17px;color:#0B3D66;line-height:1.45;display:block}.cta p b{color:#0B3D66}
 .cta p{font-size:14px;color:#4F6680;margin-top:6px;line-height:1.65}
 .cta a{display:block;margin-top:12px;background:#0B3D66;color:#fff;text-align:center;padding:15px;border-radius:14px;text-decoration:none;font-weight:700;font-size:15.5px}
 .cta a.k{background:#FEE500;color:#191919;margin-top:8px}
@@ -135,12 +141,24 @@ details.help ul{margin:8px 0 2px 18px;font-size:13px;color:#4F6680;line-height:1
       <label class="t" for="pCard">사업용 카드·현금영수증 매입</label>
       <div class="hint">홈택스 › 사업용 신용카드 사용내역 + 현금영수증(지출증빙) 합계</div>
       <div class="inp"><input id="pCard" inputmode="numeric"><em>원</em></div>
+      <div class="nolist">
+        <div class="nh">❌ 이런 곳에서 쓴 카드는 부가세 공제가 안 돼요</div>
+        <div class="chips">
+          <span>🏬 백화점·면세점</span><span>💊 병원·약국</span><span>✈️ 항공·KTX·택시·버스</span>
+          <span>💇 미용실·사우나·골프·학원</span><span>💐 꽃집·선물·상품권</span><span>🥬 식자재 (쌀·채소·고기·과일)</span>
+          <span>🚗 일반 승용차 주유·주차·톨게이트</span><span>🌐 해외 결제 (넷플릭스·해외 프로그램)</span>
+          <span>🧾 세금·공과금·보험료 카드 납부</span><span>🏪 면세·간이과세 가게</span><span>🍺 유흥주점</span>
+        </div>
+        <div class="nh ok">⭕ 사업에 쓴 이런 곳은 공제돼요</div>
+        <div class="chips ok">
+          <span>식당·카페 (직원 식사·업무 미팅)</span><span>호텔 (출장)</span><span>편의점·다이소·마트·쿠팡</span>
+          <span>통신비·우체국·택배</span><span>국내 프로그램·정수기·복합기 렌탈</span><span>화물차·경차 등 공제되는 차량 주유</span>
+        </div>
+        <div class="nnote">세무법인에서 카드 매입을 정리할 때 실제로 쓰는 기준이에요. 업종에 따라 예외가 있어요. 예를 들어 옷을 떼어 파는 도소매업은 백화점·의류 매입도 상품 매입이라 공제되고, 음식점의 식자재는 따로 의제매입세액공제를 받아요.</div>
+      </div>
       <div class="field" style="margin-top:12px">
-        <label class="t" style="font-size:13.5px">그중 공제가 안 되는 비율 (어림)</label>
-        <div class="range"><input type="range" id="pNo" min="0" max="80" step="5"><b id="pNoV"></b></div>
-        <details class="help"><summary>공제가 안 되는 카드 매입은 이런 것들이에요</summary>
-          <ul><li>거래처 접대비, 선물</li><li>일반 승용차(경차 제외) 기름값·수리비</li><li>쌀·채소·고기 같은 면세 품목, 도서</li><li>간이과세 가게에서 결제한 금액 (일부 제외)</li><li>항공권·KTX·버스, 병원비</li><li>사업과 관계없는 개인 지출</li></ul>
-        </details>
+        <label class="t" for="pEx" style="font-size:14px">그중 ❌ 가게에서 쓴 금액 <span class="opt">어림해도 괜찮아요</span></label>
+        <div class="inp"><input id="pEx" inputmode="numeric"><em>원</em></div>
       </div>
     </div>
     <div class="field">
@@ -201,8 +219,8 @@ details.help ul{margin:8px 0 2px 18px;font-size:13px;color:#4F6680;line-height:1
   </div>
 
   <div class="cta">
-    <b>우리 가게 카드 매입,<br>한 건씩 확인받고 싶다면</b>
-    <p>다해과장이 근무하는 세무법인에서는 기장할 때 사업용 카드·현금영수증 매입을 한 건씩 보고 공제되는 것과 안 되는 것을 나눠 정리해요. 신고서와 장부를 같이 보며 상담해 드려요.</p>
+    <b>이번 부가세,<br>다해과장이 자세히 계산해 드릴게요</b>
+    <p>세무법인 청담택스매니지먼트에 기장을 맡기시면, 담당 실무자 다해과장이 사업용 카드·현금영수증 매입을 <b>한 건씩</b> 확인해서 신고 전에 <b>이번 부가세 예상 금액을 자세히</b> 계산해 드려요. 공제되는 것과 안 되는 것도 나눠서 보여 드려요.</p>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform" target="_blank" rel="noopener">기장·신고 상담 신청하기</a>
     <a class="k" href="https://open.kakao.com/o/s9Iptnbf" target="_blank" rel="noopener">카톡으로 먼저 물어보기</a>
     <div class="firm">기장·신고: 세무법인 청담택스매니지먼트 · 조지훈 세무사</div>
@@ -214,8 +232,8 @@ details.help ul{margin:8px 0 2px 18px;font-size:13px;color:#4F6680;line-height:1
 
 <script>
 const $ = id => document.getElementById(id);
-const ids = ['sCard','sCash','sTax','sEtc','pTax','pCard','pOwn','ccUsed','pre'];
-const DEF = {sCard:120000000, sCash:8000000, sTax:0, sEtc:2000000, pTax:33000000, pCard:22000000, pOwn:3300000, ccUsed:0, pre:2600000, pNo:25};
+const ids = ['sCard','sCash','sTax','sEtc','pTax','pCard','pEx','pOwn','ccUsed','pre'];
+const DEF = {sCard:120000000, sCash:8000000, sTax:0, sEtc:2000000, pTax:33000000, pCard:22000000, pEx:5500000, pOwn:3300000, ccUsed:0, pre:2600000};
 const RATE = 0.013, CAP = 10000000;
 const parse = v => { v=String(v||'').replace(/[^0-9]/g,''); return v===''?0:Number(v); };
 const comma = n => Math.round(n).toLocaleString('ko-KR');
@@ -228,18 +246,17 @@ const type = () => document.querySelector('input[name=type]:checked').value;
 
 function load(){
   const q=new URLSearchParams(location.search); const st={...DEF};
-  if (q.has('sc')){ const m={sc:'sCard',sh:'sCash',st:'sTax',se:'sEtc',pt:'pTax',pc:'pCard',po:'pOwn',cu:'ccUsed',pr:'pre'};
-    for (const k in m) st[m[k]]=Number(q.get(k)||0); st.pNo=Number(q.get('pn')||25);
+  if (q.has('sc')){ const m={sc:'sCard',sh:'sCash',st:'sTax',se:'sEtc',pt:'pTax',pc:'pCard',px:'pEx',po:'pOwn',cu:'ccUsed',pr:'pre'};
+    for (const k in m) st[m[k]]=Number(q.get(k)||0);
     if (q.get('t')==='c') document.querySelector('input[value=c]').checked=true; $('cc').checked=q.get('cc')!=='0'; }
   ids.forEach(id=>$(id).value = st[id]?comma(st[id]):'');
-  $('pNo').value=st.pNo;
 }
-function save(v){ const q=new URLSearchParams({t:type(),sc:v.sCard,sh:v.sCash,st:v.sTax,se:v.sEtc,pt:v.pTax,pc:v.pCard,po:v.pOwn,cu:v.ccUsed,pr:v.pre,pn:v.pNo,cc:$('cc').checked?1:0});
+function save(v){ const q=new URLSearchParams({t:type(),sc:v.sCard,sh:v.sCash,st:v.sTax,se:v.sEtc,pt:v.pTax,pc:v.pCard,px:v.pEx,po:v.pOwn,cu:v.ccUsed,pr:v.pre,cc:$('cc').checked?1:0});
   history.replaceState(null,'','?'+q.toString()); }
 
 let last=null;
 function calc(){
-  const v={}; ids.forEach(id=>v[id]=parse($(id).value)); v.pNo=Number($('pNo').value); $('pNoV').textContent=v.pNo+'%';
+  const v={}; ids.forEach(id=>v[id]=parse($(id).value)); v.pEx=Math.min(v.pEx,v.pCard);
   const corp = type()==='c';
   $('ccWrap').style.display = corp?'none':''; $('ccUsedWrap').style.display = (corp||!$('cc').checked)?'none':'';
   $('preHint').textContent = corp ? '10~12월 숫자만 넣었다면 비워 두세요. 소규모 법인이 11월에 고지서로 낸 금액이 있다면 넣어 주세요' : '11월에 고지서로 낸 부가세(예정고지)가 있다면 넣어 주세요';
@@ -249,7 +266,7 @@ function calc(){
   const sales = v.sCard+v.sCash+v.sTax+v.sEtc;
   const outTax = sales/11;
   const inTaxInv = v.pTax/11;
-  const inTaxCard = v.pCard*(1-v.pNo/100)/11;
+  const inTaxCard = (v.pCard-v.pEx)/11;
   const inTaxOwn = v.pOwn/11;
   const inTax = inTaxInv+inTaxCard+inTaxOwn;
   const ccElig = !corp && $('cc').checked;
@@ -275,11 +292,12 @@ function calc(){
   const perMonth = Math.max(0,(B.base-B.cc))/months;
   $('rSave').innerHTML = `📌 이번 기간 기준이면 다음부터 <b>매달 ${man(perMonth)}씩</b> 세금 통장에 따로 떼어 두면 신고 달에 놀라지 않아요.`;
   // 왜 많이 나왔나
-  const deductBase = v.pTax + v.pCard*(1-v.pNo/100) + v.pOwn;
+  const deductBase = v.pTax + (v.pCard-v.pEx) + v.pOwn;
   const ratio = sales? deductBase/sales*100 : 0;
   const items=[];
   items.push({on: ratio<40, t:`매출 100원당 증빙 있는 매입이 <b>${Math.round(ratio)}원</b>이에요.`, d: ratio<40?'매입 증빙이 적을수록 부가세가 커져요. 현금으로 사고 증빙을 안 받은 재료·비품이 없는지 보세요.':'매입 증빙은 어느 정도 갖춰져 있어요.'});
   items.push({on: v.pCard===0, t: v.pCard===0?'<b>카드 매입이 0원</b>으로 들어가 있어요.':'카드 매입이 반영되어 있어요.', d: v.pCard===0?'사업용 카드 매입이 신고에 안 들어가면 낼 세금이 그만큼 늘어요.':''});
+  if (v.pCard>0 && v.pEx===0) items.push({on:true, t:'<b>❌ 가게에서 쓴 금액</b>을 빼지 않으셨어요.', d:'백화점·약국·항공 같은 곳의 결제가 섞여 있으면 실제로는 이 결과보다 부가세가 더 나와요.'});
   items.push({on: v.pOwn===0, t: v.pOwn===0?'<b>대표님 개인 카드 사업 경비</b>가 비어 있어요.':'개인 카드 사업 경비도 넣으셨어요.', d: v.pOwn===0?'본인 명의 카드로 산 사업용 물품도 공제받을 수 있어요. 자주 빠지는 부분이에요.':''});
   items.push({on: true, t:'<b>인건비와 면세 재료</b>에는 부가세가 없어요.', d:'직원 급여, 쌀·채소·고기처럼 면세 품목은 매입세액이 없어서 매출 대비 부가세가 커 보이는 게 정상이에요.'});
   if (!corp && v.pre) items.push({on:false, t:`11월에 낸 <b>${man(v.pre)}</b>은 이미 빠진 금액이에요.`, d:'1월에 낼 금액이 작아 보여도 하반기 전체 부가세는 이보다 커요.'});
@@ -289,7 +307,7 @@ function calc(){
 }
 
 ids.forEach(id=>$(id).addEventListener('input',e=>{ const n=parse(e.target.value); e.target.value=n?comma(n):''; calc(); }));
-$('pNo').addEventListener('input',calc); $('cc').addEventListener('change',calc);
+$('cc').addEventListener('change',calc);
 document.querySelectorAll('input[name=type]').forEach(r=>r.addEventListener('change',calc));
 
 $('btnShare').addEventListener('click', async ()=>{
