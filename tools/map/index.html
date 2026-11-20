@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>우리 사업장 관계도 그리기 | 사업장이 여러 개인 대표님 | 다해노트</title>
+<meta name="description" content="개인사업자·법인·지점·가족 지분·대여금·임대까지, 서로 엉킨 사업장을 한 장의 관계도로 그려 드려요. 관계마다 꼭 확인할 세무 포인트도 같이 보여 줘요.">
+<meta property="og:title" content="우리 사업장 관계도 그리기 | 다해노트">
+<meta property="og:description" content="엉킨 사업장, 한 장으로 정리해 보세요.">
+<meta property="og:image" content="https://dahaenote.com/sample-report.png">
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;color:#16324F;background:linear-gradient(160deg,#F5FAFF,#E3EFFB 60%,#D3E5F7);min-height:100vh;word-break:keep-all;-webkit-text-size-adjust:100%}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.top a{color:#2F6FD0;text-decoration:none;font-size:14px;font-weight:700}
+.top span{font-size:12px;font-weight:700;letter-spacing:3px;color:#2F6FD0}
+.badge{display:inline-block;margin-top:20px;background:#FFF1E5;color:#E06A0B;font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 12px}
+h1{font-size:27px;font-weight:900;margin-top:10px;line-height:1.35}
+.lead{color:#4F6680;font-size:15px;margin-top:8px;line-height:1.6}
+.safe{font-size:12.5px;color:#1E7A5C;background:#E3F4EE;border-radius:10px;padding:8px 12px;margin-top:12px;display:inline-block}
+.box{background:#fff;border-radius:20px;padding:18px 16px;box-shadow:0 8px 24px rgba(11,61,102,.08);margin-top:16px}
+.box h2{font-size:17px;font-weight:900;display:flex;align-items:center;gap:8px}
+.box h2 .n{display:inline-block;width:24px;height:24px;border-radius:50%;background:#0B3D66;color:#fff;font-size:13px;text-align:center;line-height:24px}
+.hint{font-size:12.5px;color:#7C90A6;margin-top:4px;line-height:1.5}
+.row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.row input,.row select{border:1.5px solid #CFE0F2;border-radius:12px;padding:10px 10px;font:500 15px 'Noto Sans KR',sans-serif;color:#16324F;background:#F8FBFF;min-width:0}
+.row input{flex:1 1 140px}.row select{flex:0 1 auto}
+.row button,.btn{border:0;border-radius:12px;padding:10px 14px;font:700 14.5px 'Noto Sans KR',sans-serif;cursor:pointer;background:#0B3D66;color:#fff;white-space:nowrap}
+.btn.l{background:#EEF4FB;color:#0B3D66}.btn.o{background:#FF8A2B}
+.list{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 6px 6px 12px;font-size:13.5px;font-weight:700;background:#EEF4FB}
+.chip button{border:0;background:rgba(0,0,0,.08);border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer;color:#16324F}
+.rel{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;padding:7px 0;border-top:1px solid #EEF4FB}
+.rel:first-child{border-top:0}
+.rel button{border:0;background:#F3F6FA;border-radius:8px;padding:3px 8px;font-size:12px;cursor:pointer;color:#7C90A6}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.mapbox{background:#fff;border-radius:22px;margin-top:16px;box-shadow:0 10px 30px rgba(11,61,102,.12);overflow:hidden}
+.maphead{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid #EEF4FB}
+.maphead b{font-size:16px}
+.mapscroll{overflow:auto;-webkit-overflow-scrolling:touch}
+svg{display:block}
+.legend{display:flex;flex-wrap:wrap;gap:10px;padding:10px 16px 14px;font-size:12px;color:#4F6680}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{display:inline-block;width:18px;height:3px;border-radius:2px}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.sum div{background:#0B3D66;color:#fff;border-radius:14px;padding:12px;text-align:center}
+.sum b{display:block;font-size:22px}.sum span{font-size:12px;color:#BFD6EE}
+.chk .item{display:flex;gap:10px;padding:12px 0;border-top:1px solid #EEF4FB;font-size:14px;line-height:1.6}
+.chk .item:first-of-type{border-top:0}
+.chk .ic{flex:none;width:26px;height:26px;border-radius:8px;background:#FFE8D6;text-align:center;line-height:26px}
+.chk .item b{color:#0B3D66}
+.chk .item small{display:block;color:#7C90A6;font-size:12.5px}
+.chk .item a{color:#2F6FD0;font-weight:700;text-decoration:none}
+.cta{margin-top:18px;background:#fff;border:2px solid #0B3D66;border-radius:20px;padding:20px 18px}
+.cta > b{font-size:17px;color:#0B3D66;line-height:1.45;display:block}
+.cta p{font-size:14px;color:#4F6680;margin-top:6px;line-height:1.65}
+.cta p b{color:#0B3D66}
+.cta a{display:block;margin-top:12px;background:#0B3D66;color:#fff;text-align:center;padding:15px;border-radius:14px;text-decoration:none;font-weight:700;font-size:15.5px}
+.cta a.k{background:#FEE500;color:#191919;margin-top:8px}
+.cta .firm{font-size:11.5px;color:#8DA0B5;margin-top:10px;text-align:center}
+.foot{margin-top:28px;font-size:12px;color:#7C90A6;line-height:1.7;text-align:center}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#16324F;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:9}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a href="/">← 다해노트</a><span>DAHAE NOTE</span></div>
+  <span class="badge">사업장이 2곳 이상인 대표님</span>
+  <h1>엉킨 사업장,<br>한 장으로 그려 볼까요?</h1>
+  <p class="lead">개인사업자·법인·지점, 가족 지분, 대여금·임대 관계를 넣으면<br>관계도와 <b>관계마다 꼭 확인할 포인트</b>를 같이 보여 드려요.</p>
+  <div class="safe">🔒 입력한 내용은 서버로 보내지 않고 이 기기에만 저장돼요</div>
+
+  <div class="box">
+    <h2><span class="n">1</span>사람·사업장 넣기</h2>
+    <div class="hint">대표님, 가족, 개인사업자, 법인, 지점, 건물까지 넣을 수 있어요. 이름은 별칭(예: A식당)으로 넣어도 돼요.</div>
+    <div class="row">
+      <select id="nType">
+        <option value="person">👤 사람 (대표·가족)</option>
+        <option value="biz">🏪 개인사업자</option>
+        <option value="corp">🏢 법인</option>
+        <option value="branch">📍 지점·직영점</option>
+        <option value="asset">🏠 건물·부동산</option>
+      </select>
+      <input id="nName" placeholder="예: 김대표, A식당, (주)B유통">
+      <button id="addNode">추가</button>
+    </div>
+    <div class="list" id="nodeList"></div>
+  </div>
+
+  <div class="box">
+    <h2><span class="n">2</span>관계 잇기</h2>
+    <div class="hint">누가 누구와 어떻게 연결돼 있는지 골라 주세요. 금액·지분은 대략이어도 괜찮아요.</div>
+    <div class="row">
+      <select id="rFrom"></select>
+      <select id="rType">
+        <option value="own">지분 보유 (%)</option>
+        <option value="run">운영 (개인사업자 대표)</option>
+        <option value="officer">대표이사·임원</option>
+        <option value="branch">지점 (본점 → 지점)</option>
+        <option value="joint">공동사업 (지분 %)</option>
+        <option value="lease">임대 (건물주 → 임차인)</option>
+        <option value="loan">돈 빌려줌 (빌려준 쪽 → 빌린 쪽)</option>
+        <option value="advance">가지급금 (법인 → 대표·가족)</option>
+        <option value="trade">거래 (판 쪽 → 산 쪽)</option>
+        <option value="work">근무 (가족 → 사업장)</option>
+      </select>
+      <select id="rTo"></select>
+      <input id="rVal" placeholder="지분 % 또는 금액 (선택)" style="flex:1 1 120px">
+      <button id="addRel">잇기</button>
+    </div>
+    <div id="relList" style="margin-top:8px"></div>
+    <div class="tools">
+      <button class="btn l" id="btnEx">예시 불러오기</button>
+      <button class="btn l" id="btnClear">처음부터 그리기</button>
+    </div>
+  </div>
+
+  <div class="mapbox">
+    <div class="maphead"><b>🗺️ 우리 사업장 관계도</b><div style="display:flex;gap:6px"><button class="btn l" id="btnPng" style="padding:8px 12px">이미지 저장</button></div></div>
+    <div class="hint" style="padding:8px 16px 0">휴대폰에서는 옆으로 밀어서 보세요 ↔</div><div class="mapscroll"><svg id="svg"></svg></div>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="sum" id="sum"></div>
+
+  <div class="box chk">
+    <h2>관계마다 꼭 확인할 포인트</h2>
+    <div class="hint">그린 관계를 보고 자동으로 골랐어요. 일반적인 확인 항목이에요.</div>
+    <div id="checks" style="margin-top:6px"></div>
+  </div>
+
+  <div class="cta">
+    <b>사업장이 여러 개라면,<br>장부도 한 곳에서 같이 보세요</b>
+    <p>세무법인 청담택스매니지먼트에 기장을 맡기시면, 담당 실무자 다해과장이 <b>사업장마다 따로 흩어진 장부를 한 그림으로</b> 묶어 보고, 사업장 사이 거래·대여금·지분 관계를 매달 대표보고 한 장에 정리해 드려요.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform" target="_blank" rel="noopener">숫자 관리·기장 상담 신청하기</a>
+    <a class="k" href="https://open.kakao.com/o/s9Iptnbf" target="_blank" rel="noopener">카톡으로 먼저 물어보기</a>
+    <div class="firm">기장·신고: 세무법인 청담택스매니지먼트 · 조지훈 세무사</div>
+  </div>
+
+  <div class="foot">다해노트 · 다해과장(이지해)<br>입력한 내용은 이 기기(브라우저)에만 저장되고 서버로 보내지 않아요.<br>확인 포인트는 일반적인 안내이며, 실제 세금 판단은 세무사 확인이 필요해요.</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const TYPES={person:{ic:'👤',name:'사람',fill:'#FFF4EA',stroke:'#FF8A2B'},biz:{ic:'🏪',name:'개인사업자',fill:'#EAF2FD',stroke:'#2F6FD0'},corp:{ic:'🏢',name:'법인',fill:'#0B3D66',stroke:'#0B3D66',dark:1},branch:{ic:'📍',name:'지점',fill:'#EEF4FB',stroke:'#8DA0B5'},asset:{ic:'🏠',name:'건물',fill:'#E3F4EE',stroke:'#1E7A5C'}};
+const RT={own:{n:'지분',c:'#0B3D66',dash:''},run:{n:'운영',c:'#2F6FD0',dash:''},officer:{n:'대표·임원',c:'#7C90A6',dash:'6 4'},branch:{n:'지점',c:'#8DA0B5',dash:''},joint:{n:'공동사업',c:'#8E7CC3',dash:''},lease:{n:'임대',c:'#1E7A5C',dash:'6 4'},loan:{n:'대여',c:'#E86A92',dash:'6 4'},advance:{n:'가지급금',c:'#D9480F',dash:''},trade:{n:'거래',c:'#F2A33A',dash:'2 4'},work:{n:'근무',c:'#5BB5A2',dash:'2 4'}};
+const LAYER={person:0,corp:1,biz:1,branch:2,asset:2};
+let S={nodes:[],rels:[],seq:1};
+const EX={nodes:[{id:1,t:'person',n:'김대표'},{id:2,t:'person',n:'배우자'},{id:3,t:'biz',n:'A식당 (개인)'},{id:4,t:'corp',n:'(주)B유통'},{id:5,t:'branch',n:'B유통 2호점'},{id:6,t:'asset',n:'성수동 건물'},{id:7,t:'corp',n:'(주)C에프앤비'}],
+ rels:[{f:1,t:'run',to:3,v:''},{f:1,t:'own',to:4,v:'70%'},{f:2,t:'own',to:4,v:'30%'},{f:1,t:'officer',to:4,v:''},{f:4,t:'branch',to:5,v:''},{f:1,t:'own',to:6,v:'100%'},{f:6,t:'lease',to:4,v:'월 300만원'},{f:4,t:'advance',to:1,v:'5,000만원'},{f:4,t:'trade',to:3,v:'식자재'},{f:2,t:'work',to:3,v:''},{f:1,t:'own',to:7,v:'40%'},{f:4,t:'own',to:7,v:'60%'},{f:7,t:'loan',to:4,v:'1억원'}],seq:8};
+function save(){ try{localStorage.setItem('dahae_map',JSON.stringify(S));}catch(e){} }
+function load(){ try{ const s=JSON.parse(localStorage.getItem('dahae_map')||'null'); if(s&&s.nodes) S=s; else S=JSON.parse(JSON.stringify(EX)); }catch(e){ S=JSON.parse(JSON.stringify(EX)); } }
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const nodeBy=id=>S.nodes.find(n=>n.id===id);
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),2000);}
+
+function drawLists(){
+  $('nodeList').innerHTML=S.nodes.map(n=>`<span class="chip">${TYPES[n.t].ic} ${esc(n.n)}<button data-del="${n.id}" aria-label="삭제">✕</button></span>`).join('')||'<span class="hint">아직 없어요</span>';
+  const opts=S.nodes.map(n=>`<option value="${n.id}">${TYPES[n.t].ic} ${esc(n.n)}</option>`).join('');
+  const f=$('rFrom').value, t=$('rTo').value; $('rFrom').innerHTML=opts; $('rTo').innerHTML=opts; if(f) $('rFrom').value=f; if(t) $('rTo').value=t;
+  $('relList').innerHTML=S.rels.map((r,i)=>{const a=nodeBy(r.f),b=nodeBy(r.to); if(!a||!b) return ''; return `<div class="rel"><span>${esc(a.n)} <b style="color:${RT[r.t].c}">→ ${RT[r.t].n}${r.v?' '+esc(r.v):''} →</b> ${esc(b.n)}</span><button data-rdel="${i}">삭제</button></div>`;}).join('');
+}
+document.addEventListener('click',e=>{
+  const d=e.target.getAttribute('data-del'); if(d){ const id=+d; S.nodes=S.nodes.filter(n=>n.id!==id); S.rels=S.rels.filter(r=>r.f!==id&&r.to!==id); render(); }
+  const rd=e.target.getAttribute('data-rdel'); if(rd!==null){ S.rels.splice(+rd,1); render(); }
+});
+$('addNode').onclick=()=>{ const n=$('nName').value.trim(); if(!n) return toast('이름을 넣어 주세요'); S.nodes.push({id:S.seq++,t:$('nType').value,n}); $('nName').value=''; render(); };
+$('nName').addEventListener('keydown',e=>{ if(e.key==='Enter') $('addNode').click(); });
+$('addRel').onclick=()=>{ const f=+$('rFrom').value,to=+$('rTo').value; if(!f||!to) return toast('사람·사업장을 먼저 넣어 주세요'); if(f===to) return toast('서로 다른 두 곳을 골라 주세요'); S.rels.push({f,t:$('rType').value,to,v:$('rVal').value.trim()}); $('rVal').value=''; render(); };
+$('btnEx').onclick=()=>{ S=JSON.parse(JSON.stringify(EX)); render(); toast('가상의 예시를 불러왔어요'); };
+$('btnClear').onclick=()=>{ if(!confirm('지금 그린 관계도를 지우고 처음부터 그릴까요?')) return; S={nodes:[],rels:[],seq:1}; render(); };
+
+/* ===== 배치: 사람(위) → 법인·개인사업자(가운데) → 지점·건물(아래) ===== */
+function layout(){
+  const W=Math.max(800, 270*Math.max(...[0,1,2].map(l=>S.nodes.filter(n=>LAYER[n.t]===l).length),1)+80);
+  const rows=[0,1,2].map(l=>S.nodes.filter(n=>LAYER[n.t]===l));
+  // 가운데 줄은 연결된 사람 순서로, 아래 줄은 연결된 위 노드 순서로 정렬
+  const pos={};
+  const place=(row,y)=>{ const gap=W/(row.length+1); row.forEach((n,i)=>pos[n.id]={x:gap*(i+1),y}); };
+  place(rows[0],80);
+  const avgX=(n,cands)=>{ const xs=S.rels.filter(r=>(r.to===n.id&&cands.includes(r.f))||(r.f===n.id&&cands.includes(r.to))).map(r=>pos[r.to===n.id?r.f:r.to]?.x).filter(v=>v!=null); return xs.length?xs.reduce((a,b)=>a+b,0)/xs.length:W/2; };
+  const ids0=rows[0].map(n=>n.id); rows[1].sort((a,b)=>avgX(a,ids0)-avgX(b,ids0)); place(rows[1],310);
+  const ids01=rows[0].concat(rows[1]).map(n=>n.id); rows[2].sort((a,b)=>avgX(a,ids01)-avgX(b,ids01)); place(rows[2],540);
+  const H=rows[2].length?620:(rows[1].length?400:170);
+  return {W,H,pos};
+}
+function render(){
+  save(); drawLists();
+  const {W,H,pos}=layout(); const svg=$('svg'); svg.setAttribute('width',W); svg.setAttribute('height',H); svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  let g=`<rect width="${W}" height="${H}" fill="#FBFDFF"/>`;
+  ['사람','사업장','지점·건물'].forEach((t,i)=>{ if(S.nodes.some(n=>LAYER[n.t]===i)) g+=`<text x="12" y="${[80,310,540][i]-46}" font-size="11" fill="#9DB4CC" font-family="Noto Sans KR">${t}</text>`; });
+  // 같은 두 노드 사이 여러 관계는 휘는 정도를 다르게
+  const pairCount={}; let L='';
+  S.rels.forEach((r,i)=>{ const a=pos[r.f],b=pos[r.to]; if(!a||!b) return; const key=[r.f,r.to].sort().join('-'); const k=pairCount[key]=(pairCount[key]||0)+1; const bend=(k===1?0:(k%2?1:-1)*Math.floor(k/2)*62); const P=r.f<r.to?a:b, Q=r.f<r.to?b:a;
+    const mx=(a.x+b.x)/2, my=(a.y+b.y)/2; const dx=Q.x-P.x, dy=Q.y-P.y, len=Math.hypot(dx,dy)||1; const cx=mx-dy/len*bend, cy=my+dx/len*bend;
+    const c=RT[r.t].c; const tt=[0.5,0.36,0.64][i%3]; const lx=(1-tt)*(1-tt)*a.x+2*(1-tt)*tt*cx+tt*tt*b.x, ly=(1-tt)*(1-tt)*a.y+2*(1-tt)*tt*cy+tt*tt*b.y; const label=RT[r.t].n+(r.v?' '+r.v:'');
+    g+=`<path d="M${a.x},${a.y} Q${cx},${cy} ${b.x},${b.y}" fill="none" stroke="${c}" stroke-width="2.4" ${RT[r.t].dash?`stroke-dasharray="${RT[r.t].dash}"`:''} marker-end="url(#m${r.t})" opacity=".9"/>`;
+    const tw=label.length*12+16; L+=`<rect x="${lx-tw/2}" y="${ly-11}" width="${tw}" height="22" rx="11" fill="#fff" stroke="${c}" stroke-width="1"/><text x="${lx}" y="${ly+4.5}" text-anchor="middle" font-size="12" font-weight="700" fill="${c}" font-family="Noto Sans KR">${esc(label)}</text>`;
+  });
+  g+=L;
+  S.nodes.forEach(n=>{ const p=pos[n.id]; const T=TYPES[n.t]; const w=Math.max(120, n.n.length*15+44); const h=46;
+    g+=`<g><rect x="${p.x-w/2}" y="${p.y-h/2}" width="${w}" height="${h}" rx="${n.t==='person'?23:12}" fill="${T.fill}" stroke="${T.stroke}" stroke-width="2"/><text x="${p.x}" y="${p.y+5}" text-anchor="middle" font-size="14.5" font-weight="900" fill="${T.dark?'#fff':'#16324F'}" font-family="Noto Sans KR">${T.ic} ${esc(n.n)}</text></g>`; });
+  const defs=Object.entries(RT).map(([k,v])=>`<marker id="m${k}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${v.c}"/></marker>`).join('');
+  svg.innerHTML=`<defs>${defs}</defs>`+g;
+  const used=[...new Set(S.rels.map(r=>r.t))];
+  $('legend').innerHTML=used.map(k=>`<span><i style="background:${RT[k].c}"></i>${RT[k].n}</span>`).join('');
+  const bizN=S.nodes.filter(n=>['biz','corp','branch'].includes(n.t)).length;
+  $('sum').innerHTML=`<div><b>${bizN}</b><span>사업장</span></div><div><b>${S.nodes.filter(n=>n.t==='person').length}</b><span>사람</span></div><div><b>${S.rels.length}</b><span>얽힌 관계</span></div>`;
+  checks();
+}
+/* ===== 확인 포인트 ===== */
+function checks(){
+  const out=[]; const add=(k,ic,t,d,link)=>{ if(!out.some(o=>o.k===k)) out.push({k,ic,t,d,link}); };
+  const N=nodeBy;
+  S.persons=S.nodes.filter(n=>n.t==='person');
+  // 개인사업장 여러 개
+  S.persons.forEach(p=>{ const runs=S.rels.filter(r=>r.f===p.id&&(r.t==='run'||r.t==='joint')); if(runs.length>=2) add('multi'+p.id,'🏪',`${p.n}: 개인사업장이 ${runs.length}곳이에요`,'종합소득세는 모든 사업장 소득을 합쳐서 신고해요. 사업장마다 장부가 따로면 합칠 때 빠지는 경비가 생기기 쉬워요.'); });
+  S.rels.forEach(r=>{ const a=N(r.f),b=N(r.to); if(!a||!b) return;
+    if(r.t==='advance') add('adv'+r.f+r.to,'💸',`${a.n} → ${b.n} 가지급금${r.v?' '+r.v:''}`,'법인이 대표·가족에게 준 돈은 이자(인정이자, 연 4.6%)를 매년 계산해 법인 수익으로 잡고, 법인 이자비용 일부가 비용으로 인정되지 않을 수 있어요. 갚는 계획을 세워 두세요.');
+    if(r.t==='loan') add('loan'+r.f+r.to,'🤝',`${a.n} → ${b.n} 대여금${r.v?' '+r.v:''}`,'특수관계끼리 돈을 빌려주면 적정 이자와 계약서가 중요해요. 이자를 안 받거나 너무 적으면 세무상 문제가 될 수 있어요.',{u:'/forms/?q=차용증',t:'차용증 양식 찾기'});
+    const owner = a.t==='person'?a:(a.t==='asset'?N((S.rels.find(x=>x.to===a.id&&x.t==='own'&&N(x.f)?.t==='person')||{}).f):null);
+    if(r.t==='lease'&&owner) add('lease'+r.f+r.to,'🏠',`${owner.n} 소유 ${a.t==='asset'?a.n:'건물'}을 ${b.n}이(가) 사용`,'대표 개인 건물을 법인·다른 사업장이 쓰면 시세에 맞는 임대료를 정하고, 임대인은 사업자등록·세금계산서(부가세)를 챙겨야 해요. 너무 싸거나 비싸면 문제가 될 수 있어요.');
+    if(r.t==='trade') add('trade'+r.f+r.to,'🔁',`${a.n} ↔ ${b.n} 사이 거래`,'주인이 같은 사업장끼리 사고팔 때는 시세대로 거래하고 세금계산서를 꼭 주고받아요. 한쪽에 이익을 몰아주면 부당행위로 볼 수 있어요.');
+    if(r.t==='work') add('work'+r.f+r.to,'👪',`${a.n}이(가) ${b.n}에서 근무`,'가족 인건비는 실제로 일한 기록(출근·업무 내용)과 급여 이체 내역이 있어야 비용으로 인정돼요. 4대보험·원천세 신고도 같이 챙겨요.',{u:'/forms/?q=근로계약서',t:'근로계약서 양식 찾기'});
+    if(r.t==='joint') add('joint'+r.to,'🧩',`${b.n}: 공동사업`,'공동사업은 손익분배비율을 정한 동업계약서가 있어야 하고, 사업자등록에도 공동사업자로 올라가 있어야 해요.');
+    if(r.t==='branch') add('branch'+r.f,'📍',`${a.n}: 지점이 있어요`,'지점은 사업장마다 부가세를 따로 신고하는 게 기본이고, 본점에서 한꺼번에 내는 방법(주사업장 총괄납부·사업자단위과세)도 있어요. 어떤 방식이 맞는지 확인해 보세요.');
+    if(r.t==='officer'&&b.t==='corp') add('off'+r.f+r.to,'👔',`${a.n}: ${b.n} 대표이사·임원`,'임원 급여·상여·퇴직금은 정관이나 주주총회에서 정한 규정 안에서만 비용으로 인정돼요. 규정을 먼저 만들어 두세요.');
+  });
+  // 과점주주 (건물 지분은 제외)
+  S.nodes.filter(n=>n.t==='corp').forEach(c=>{ const owns=S.rels.filter(r=>r.to===c.id&&r.t==='own'); const pct=r=>parseFloat(String(r.v).replace(/[^0-9.]/g,''))||0;
+    const persons=owns.filter(r=>N(r.f)?.t==='person'); const sum=persons.reduce((a,r)=>a+pct(r),0);
+    if(sum>50) add('major'+c.id,'📊',`${c.n}: 대표·가족 지분 합계 ${sum}%`,'지분이 50%를 넘는 과점주주는 법인이 세금을 못 내면 대신 낼 책임(2차 납세의무)이 생길 수 있고, 지분을 더 사서 새로 과점주주가 되면 법인이 가진 부동산·차량에 대해 취득세(간주취득세)가 나올 수 있어요.');
+    const corpOwn=owns.filter(r=>N(r.f)?.t==='corp'); if(corpOwn.length) add('chain'+c.id,'🏢',`${c.n}: 다른 법인이 지분을 갖고 있어요`,'법인끼리 지분이 엮이면 배당·거래·대여금이 모두 특수관계 거래가 돼요. 법인별 장부를 같은 기준으로 맞춰 두는 게 중요해요.'); });
+  if(S.nodes.filter(n=>['biz','corp','branch'].includes(n.t)).length>=3) add('many','🗂️','사업장이 3곳 이상이에요','사업장마다 세무사무실·장부 기준이 다르면 사업장 사이 돈의 흐름이 끊겨 보여요. 한 곳에서 같은 기준으로 보면 전체 손익과 자금이 한 장으로 보여요.');
+  $('checks').innerHTML=out.length?out.map(o=>`<div class="item"><div class="ic">${o.ic}</div><div><b>${esc(o.t)}</b><small>${o.d}</small>${o.link?`<a href="${o.link.u}">→ ${o.link.t}</a>`:''}</div></div>`).join(''):'<div class="hint">관계를 이으면 확인할 포인트가 여기에 나와요.</div>';
+}
+/* ===== 이미지 저장 ===== */
+$('btnPng').onclick=async()=>{ await document.fonts.ready; const svg=$('svg'); const W=+svg.getAttribute('width'),H=+svg.getAttribute('height');
+  const xml=new XMLSerializer().serializeToString(svg); const img=new Image(); img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml); await img.decode();
+  const c=document.createElement('canvas'); const s=2; c.width=W*s; c.height=(H+60)*s; const x=c.getContext('2d'); x.scale(s,s); x.fillStyle='#fff'; x.fillRect(0,0,W,H+60);
+  x.fillStyle='#0B3D66'; x.font="900 18px 'Noto Sans KR'"; x.fillText('우리 사업장 관계도',16,30); x.drawImage(img,0,44); x.fillStyle='#8DA0B5'; x.font="500 11px 'Noto Sans KR'"; x.fillText('dahaenote.com · 다해노트',W-150,H+52);
+  const a=document.createElement('a'); a.download='사업장_관계도.png'; a.href=c.toDataURL('image/png'); a.click(); toast('이미지를 저장했어요'); };
+load(); render();
+</script>
+</body>
+</html>
