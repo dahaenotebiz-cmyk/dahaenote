@@ -118,6 +118,7 @@ svg{display:block}
     </div>
   </div>
 
+  <div id="exBanner" style="display:none;margin-top:16px;background:#FFF1E5;border:1.5px solid #FFB57A;border-radius:16px;padding:14px 16px;font-size:14px;line-height:1.6;color:#7A3E00"><b>👀 지금 보이는 건 가상의 예시예요</b> (김대표·A식당·(주)B유통은 지어낸 이름이에요)<br>위 1번에서 내 사람·사업장을 넣기 시작하면 예시는 자동으로 지워져요. <button class="btn o" id="btnStart" style="display:block;margin-top:10px;padding:10px 14px">내 사업장 그리기 시작</button></div>
   <div class="mapbox">
     <div class="maphead"><b>🗺️ 우리 사업장 관계도</b><div style="display:flex;gap:6px"><button class="btn l" id="btnPng" style="padding:8px 12px">이미지 저장</button></div></div>
     <div class="hint" style="padding:8px 16px 0">휴대폰에서는 옆으로 밀어서 보세요 ↔</div><div class="mapscroll"><svg id="svg"></svg></div>
@@ -152,8 +153,10 @@ const LAYER={person:0,corp:1,biz:1,branch:2,asset:2};
 let S={nodes:[],rels:[],seq:1};
 const EX={nodes:[{id:1,t:'person',n:'김대표'},{id:2,t:'person',n:'배우자'},{id:3,t:'biz',n:'A식당 (개인)'},{id:4,t:'corp',n:'(주)B유통'},{id:5,t:'branch',n:'B유통 2호점'},{id:6,t:'asset',n:'성수동 건물'},{id:7,t:'corp',n:'(주)C에프앤비'}],
  rels:[{f:1,t:'run',to:3,v:''},{f:1,t:'own',to:4,v:'70%'},{f:2,t:'own',to:4,v:'30%'},{f:1,t:'officer',to:4,v:''},{f:4,t:'branch',to:5,v:''},{f:1,t:'own',to:6,v:'100%'},{f:6,t:'lease',to:4,v:'월 300만원'},{f:4,t:'advance',to:1,v:'5,000만원'},{f:4,t:'trade',to:3,v:'식자재'},{f:2,t:'work',to:3,v:''},{f:1,t:'own',to:7,v:'40%'},{f:4,t:'own',to:7,v:'60%'},{f:7,t:'loan',to:4,v:'1억원'}],seq:8};
-function save(){ try{localStorage.setItem('dahae_map',JSON.stringify(S));}catch(e){} }
-function load(){ try{ const s=JSON.parse(localStorage.getItem('dahae_map')||'null'); if(s&&s.nodes) S=s; else S=JSON.parse(JSON.stringify(EX)); }catch(e){ S=JSON.parse(JSON.stringify(EX)); } }
+function save(){ if(S.ex) return; try{localStorage.setItem('dahae_map',JSON.stringify(S));}catch(e){} }
+function exMode(){ S=JSON.parse(JSON.stringify(EX)); S.ex=true; }
+function load(){ try{ const s=JSON.parse(localStorage.getItem('dahae_map')||'null'); if(s&&s.nodes&&s.nodes.length) S=s; else exMode(); }catch(e){ exMode(); } }
+function leaveEx(){ if(S.ex){ S={nodes:[],rels:[],seq:1}; toast('예시를 지우고 내 관계도를 새로 시작해요'); } }
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
 const nodeBy=id=>S.nodes.find(n=>n.id===id);
 function toast(t){const el=$('toast');el.textContent=t;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),2000);}
@@ -168,11 +171,11 @@ document.addEventListener('click',e=>{
   const d=e.target.getAttribute('data-del'); if(d){ const id=+d; S.nodes=S.nodes.filter(n=>n.id!==id); S.rels=S.rels.filter(r=>r.f!==id&&r.to!==id); render(); }
   const rd=e.target.getAttribute('data-rdel'); if(rd!==null){ S.rels.splice(+rd,1); render(); }
 });
-$('addNode').onclick=()=>{ const n=$('nName').value.trim(); if(!n) return toast('이름을 넣어 주세요'); S.nodes.push({id:S.seq++,t:$('nType').value,n}); $('nName').value=''; render(); };
+$('addNode').onclick=()=>{ const n=$('nName').value.trim(); if(!n) return toast('이름을 넣어 주세요'); leaveEx(); S.nodes.push({id:S.seq++,t:$('nType').value,n}); $('nName').value=''; render(); };
 $('nName').addEventListener('keydown',e=>{ if(e.key==='Enter') $('addNode').click(); });
-$('addRel').onclick=()=>{ const f=+$('rFrom').value,to=+$('rTo').value; if(!f||!to) return toast('사람·사업장을 먼저 넣어 주세요'); if(f===to) return toast('서로 다른 두 곳을 골라 주세요'); S.rels.push({f,t:$('rType').value,to,v:$('rVal').value.trim()}); $('rVal').value=''; render(); };
-$('btnEx').onclick=()=>{ S=JSON.parse(JSON.stringify(EX)); render(); toast('가상의 예시를 불러왔어요'); };
-$('btnClear').onclick=()=>{ if(!confirm('지금 그린 관계도를 지우고 처음부터 그릴까요?')) return; S={nodes:[],rels:[],seq:1}; render(); };
+$('addRel').onclick=()=>{ if(S.ex) return toast('먼저 1번에서 내 사람·사업장을 넣어 주세요'); const f=+$('rFrom').value,to=+$('rTo').value; if(!f||!to) return toast('사람·사업장을 먼저 넣어 주세요'); if(f===to) return toast('서로 다른 두 곳을 골라 주세요'); S.rels.push({f,t:$('rType').value,to,v:$('rVal').value.trim()}); $('rVal').value=''; render(); };
+$('btnEx').onclick=()=>{ if(!S.ex && S.nodes.length && !confirm('지금 그린 내 관계도 대신 예시를 볼까요? (내 관계도는 지워져요)')) return; exMode(); try{localStorage.removeItem('dahae_map');}catch(e){} render(); toast('가상의 예시를 불러왔어요'); };
+$('btnClear').onclick=()=>{ if(!S.ex && S.nodes.length && !confirm('지금 그린 관계도를 지우고 처음부터 그릴까요?')) return; S={nodes:[],rels:[],seq:1}; try{localStorage.removeItem('dahae_map');}catch(e){} render(); };
 
 /* ===== 배치: 사람(위) → 법인·개인사업자(가운데) → 지점·건물(아래) ===== */
 function layout(){
@@ -189,7 +192,7 @@ function layout(){
   return {W,H,pos};
 }
 function render(){
-  save(); drawLists();
+  save(); drawLists(); $('exBanner').style.display=S.ex?'block':'none'; document.querySelector('.maphead b').textContent=S.ex?'🗺️ 예시 관계도 (가상)':'🗺️ 우리 사업장 관계도';
   const {W,H,pos}=layout(); const svg=$('svg'); svg.setAttribute('width',W); svg.setAttribute('height',H); svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
   let g=`<rect width="${W}" height="${H}" fill="#FBFDFF"/>`;
   ['사람','사업장','지점·건물'].forEach((t,i)=>{ if(S.nodes.some(n=>LAYER[n.t]===i)) g+=`<text x="12" y="${[80,310,540][i]-46}" font-size="11" fill="#9DB4CC" font-family="Noto Sans KR">${t}</text>`; });
@@ -244,6 +247,7 @@ $('btnPng').onclick=async()=>{ await document.fonts.ready; const svg=$('svg'); c
   const c=document.createElement('canvas'); const s=2; c.width=W*s; c.height=(H+60)*s; const x=c.getContext('2d'); x.scale(s,s); x.fillStyle='#fff'; x.fillRect(0,0,W,H+60);
   x.fillStyle='#0B3D66'; x.font="900 18px 'Noto Sans KR'"; x.fillText('우리 사업장 관계도',16,30); x.drawImage(img,0,44); x.fillStyle='#8DA0B5'; x.font="500 11px 'Noto Sans KR'"; x.fillText('dahaenote.com · 다해노트',W-150,H+52);
   const a=document.createElement('a'); a.download='사업장_관계도.png'; a.href=c.toDataURL('image/png'); a.click(); toast('이미지를 저장했어요'); };
+$('btnStart').onclick=()=>{ S={nodes:[],rels:[],seq:1}; render(); $('nName').focus(); window.scrollTo({top:$('nName').getBoundingClientRect().top+scrollY-120,behavior:'smooth'}); };
 load(); render();
 </script>
 </body>
