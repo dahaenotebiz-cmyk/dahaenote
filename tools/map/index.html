@@ -72,6 +72,10 @@ svg{display:block}
   <h1>엉킨 사업장,<br>한 장으로 그려 볼까요?</h1>
   <p class="lead">개인사업자·법인·지점, 가족 지분, 대여금·임대 관계를 넣으면<br>관계도와 <b>관계마다 꼭 확인할 포인트</b>를 같이 보여 드려요.</p>
   <div class="safe">🔒 입력한 내용은 서버로 보내지 않고 이 기기에만 저장돼요</div>
+  <div class="topbar" style="display:flex;gap:8px;margin-top:14px">
+    <button class="btn o" id="btnClear" style="flex:1;padding:14px 10px;font-size:15.5px">🧹 처음부터 그리기</button>
+    <button class="btn l" id="btnEx" style="flex:0 0 auto;padding:14px 14px;font-size:15px">👀 예시 보기</button>
+  </div>
 
   <div class="box">
     <h2><span class="n">1</span>사람·사업장 넣기</h2>
@@ -112,10 +116,6 @@ svg{display:block}
       <button id="addRel">잇기</button>
     </div>
     <div id="relList" style="margin-top:8px"></div>
-    <div class="tools">
-      <button class="btn l" id="btnEx">예시 불러오기</button>
-      <button class="btn l" id="btnClear">처음부터 그리기</button>
-    </div>
   </div>
 
   <div id="exBanner" style="display:none;margin-top:16px;background:#FFF1E5;border:1.5px solid #FFB57A;border-radius:16px;padding:14px 16px;font-size:14px;line-height:1.6;color:#7A3E00"><b>👀 지금 보이는 건 가상의 예시예요</b> (김대표·A식당·(주)B유통은 지어낸 이름이에요)<br>위 1번에서 내 사람·사업장을 넣기 시작하면 예시는 자동으로 지워져요. <button class="btn o" id="btnStart" style="display:block;margin-top:10px;padding:10px 14px">내 사업장 그리기 시작</button></div>
