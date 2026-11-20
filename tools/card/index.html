@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>카드 내역 공제 판별기 | 내 카드 중 뭐가 부가세 공제될까? | 다해노트</title>
+<meta name="description" content="홈택스 사업용 신용카드 엑셀을 올리면 가맹점별로 공제·불공제·확인 필요를 나눠 드려요. 파일은 서버로 보내지 않고 내 기기 안에서만 읽어요.">
+<meta property="og:title" content="카드 내역 공제 판별기 | 다해노트">
+<meta property="og:description" content="내 카드 중 뭐가 부가세 공제될까? 홈택스 엑셀만 올리면 바로 나눠 드려요.">
+<meta property="og:image" content="https://dahaenote.com/sample-report.png">
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;color:#16324F;background:linear-gradient(160deg,#F5FAFF,#E3EFFB 60%,#D3E5F7);min-height:100vh;word-break:keep-all;-webkit-text-size-adjust:100%}
+.wrap{max-width:560px;margin:0 auto;padding:20px 18px 60px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.top a{color:#2F6FD0;text-decoration:none;font-size:14px;font-weight:700}
+.top span{font-size:12px;font-weight:700;letter-spacing:3px;color:#2F6FD0}
+.badge{display:inline-block;margin-top:20px;background:#FFF1E5;color:#E06A0B;font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 12px}
+h1{font-size:27px;font-weight:900;margin-top:10px;line-height:1.35}
+.lead{color:#4F6680;font-size:15px;margin-top:8px;line-height:1.6}
+.box{background:#fff;border-radius:20px;padding:20px 18px;box-shadow:0 8px 24px rgba(11,61,102,.08);margin-top:16px}
+.box h2{font-size:17px;font-weight:900}
+.box h2 .n{display:inline-block;width:24px;height:24px;border-radius:50%;background:#0B3D66;color:#fff;font-size:13px;text-align:center;line-height:24px;margin-right:6px;vertical-align:2px}
+.hint{font-size:13px;color:#7C90A6;margin-top:6px;line-height:1.6}
+.path{background:#F5F9FE;border-radius:12px;padding:10px 12px;margin-top:10px;font-size:13px;color:#34506E;line-height:1.7}
+.path b{color:#0B3D66}
+.safe{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:13px;color:#1E7A5C;font-weight:700;background:#E9F7F1;border-radius:10px;padding:8px 10px}
+.drop{display:block;margin-top:12px;border:2px dashed #9DBBE0;border-radius:16px;padding:22px 12px;text-align:center;cursor:pointer;background:#F8FBFF}
+.drop.on{border-color:#0B3D66;background:#EEF4FB}
+.drop b{display:block;font-size:16px;color:#0B3D66}
+.drop span{display:block;font-size:12.5px;color:#7C90A6;margin-top:4px}
+.drop input{display:none}
+.or{text-align:center;font-size:13px;color:#8DA0B5;margin:14px 0 4px}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:14px;font:700 15px 'Noto Sans KR',sans-serif;cursor:pointer;margin-top:10px}
+.btn.ex{background:#FF8A2B;color:#fff}
+.btn.sub{background:#EEF4FB;color:#0B3D66}
+textarea{width:100%;min-height:120px;margin-top:10px;border:1.5px solid #CFE0F2;border-radius:14px;padding:12px;font:500 14px 'Noto Sans KR',sans-serif;color:#16324F;background:#F8FBFF;outline:none;resize:vertical}
+textarea:focus{border-color:#2F6FD0;background:#fff}
+details.paste{margin-top:6px}
+details.paste summary{font-size:14px;color:#2F6FD0;font-weight:700;cursor:pointer;padding:6px 0}
+.msg{font-size:13.5px;margin-top:10px;line-height:1.6}
+.msg.err{color:#C2410C}.msg.okm{color:#1E7A5C}
+#result{display:none}
+.res{background:#0B3D66;color:#fff;border-radius:22px;padding:22px 20px;margin-top:18px;box-shadow:0 14px 30px rgba(11,61,102,.25)}
+.res .k{font-size:14px;color:#BFD6EE}
+.res .big{font-size:38px;font-weight:900;margin-top:2px;letter-spacing:-.5px}
+.res .big small{font-size:15px;font-weight:500;margin-left:6px;color:#BFD6EE}
+.res .sub2{font-size:13.5px;color:#DCEAF8;margin-top:4px;line-height:1.6}
+.res .sub2 b{color:#FFD3AE}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.g3 div{border-radius:14px;padding:12px 8px;text-align:center}
+.g3 .ok{background:#2F6FD0}.g3 .no{background:#B64A2A}.g3 .ck{background:#C78A13}
+.g3 em{display:block;font-style:normal;font-size:12.5px;opacity:.9}
+.g3 b{display:block;font-size:20px;margin-top:2px}
+.g3 span{display:block;font-size:12px;opacity:.9;margin-top:2px}
+.bar{display:flex;height:12px;border-radius:999px;overflow:hidden;margin-top:14px;background:rgba(255,255,255,.15)}
+.bar i{display:block;height:100%}
+.res .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.res .btns button,.res .btns a{border:0;border-radius:14px;padding:13px 8px;font:700 14.5px 'Noto Sans KR',sans-serif;cursor:pointer;text-align:center;text-decoration:none;display:block}
+.b1{background:#fff;color:#0B3D66}.b2{background:#FF8A2B;color:#fff}
+.grp{background:#fff;border-radius:20px;margin-top:14px;box-shadow:0 8px 24px rgba(11,61,102,.08);overflow:hidden}
+.grp summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;justify-content:space-between;align-items:center}
+.grp summary::-webkit-details-marker{display:none}
+.grp summary b{font-size:16px}
+.grp summary span{font-size:13.5px;color:#4F6680}
+.grp.ok summary{border-left:6px solid #2F6FD0}.grp.no summary{border-left:6px solid #B64A2A}.grp.ck summary{border-left:6px solid #C78A13}
+.grp .gd{padding:0 18px 6px;font-size:13px;color:#4F6680;line-height:1.6}
+.row{display:flex;justify-content:space-between;gap:10px;padding:11px 18px;border-top:1px solid #EEF4FB}
+.row .l{min-width:0}
+.row .l b{display:block;font-size:14.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .l span{display:block;font-size:12px;color:#7C90A6;margin-top:2px;line-height:1.45}
+.row .r{flex:none;text-align:right;font-size:14px;font-weight:700}
+.row .r span{display:block;font-size:11.5px;color:#8DA0B5;font-weight:500}
+.more{display:block;width:100%;border:0;background:#F5F9FE;color:#2F6FD0;font:700 13.5px 'Noto Sans KR',sans-serif;padding:12px;cursor:pointer}
+.exc{font-size:14px;line-height:1.75;color:#34506E}
+.exc li{margin:4px 0 0 18px}
+.cta{margin-top:18px;background:#fff;border:2px solid #0B3D66;border-radius:20px;padding:20px 18px}
+.cta > b{font-size:17px;color:#0B3D66;line-height:1.45;display:block}
+.cta p{font-size:14px;color:#4F6680;margin-top:6px;line-height:1.65}
+.cta p b{color:#0B3D66}
+.cta a{display:block;margin-top:12px;background:#0B3D66;color:#fff;text-align:center;padding:15px;border-radius:14px;text-decoration:none;font-weight:700;font-size:15.5px}
+.cta a.k{background:#FEE500;color:#191919;margin-top:8px}
+.cta .firm{font-size:11.5px;color:#8DA0B5;margin-top:10px;text-align:center}
+.foot{margin-top:28px;font-size:12px;color:#7C90A6;line-height:1.7;text-align:center}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#16324F;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:9}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a href="/">← 다해노트</a><span>DAHAE NOTE</span></div>
+  <span class="badge">1월 부가세 신고 전 체크</span>
+  <h1>내 카드 중 뭐가<br>부가세 공제될까?</h1>
+  <p class="lead">홈택스 사업용 카드 내역을 올리면 가맹점마다<br><b>⭕ 공제 · ❌ 불공제 · ⚠️ 확인 필요</b>로 나눠 드려요.</p>
+
+  <div class="box">
+    <h2><span class="n">1</span>홈택스 카드 내역 올리기</h2>
+    <div class="path">홈택스 › 계산서·영수증·카드 › 신용카드 매입 › 사업용 신용카드 사용내역 › <b>매입세액 공제 확인/변경</b> › 조회 후 <b>내려받기(엑셀)</b></div>
+    <div class="safe">🔒 파일은 서버로 보내지 않고 이 기기 안에서만 읽어요</div>
+    <label class="drop" id="drop"><input type="file" id="file" accept=".xls,.xlsx,.csv"><b>📂 엑셀 파일 선택</b><span>.xls · .xlsx · .csv · 열 이름이 조금 달라도 알아서 찾아요</span></label>
+    <div class="msg" id="fmsg"></div>
+    <div class="or">파일이 없다면</div>
+    <button class="btn ex" id="btnEx">예시 내역으로 먼저 보기</button>
+    <details class="paste"><summary>＋ 가맹점명 직접 붙여넣기</summary>
+      <div class="hint">한 줄에 하나씩 <b>가맹점명, 금액</b>을 적어 주세요. 카드 앱에서 복사해 붙여 넣어도 돼요.</div>
+      <textarea id="paste" placeholder="스타벅스 강남점, 12000&#10;다이소, 35000&#10;대한항공, 420000"></textarea>
+      <button class="btn sub" id="btnPaste">붙여넣은 내역 판별하기</button>
+    </details>
+  </div>
+
+  <div id="result">
+    <div class="res">
+      <div class="k">⭕ 공제 그룹에서 돌려받는 부가세 (예상)</div>
+      <div class="big" id="rBig">-</div>
+      <div class="sub2" id="rSub"></div>
+      <div class="g3">
+        <div class="ok"><em>⭕ 공제</em><b id="nOk">-</b><span id="aOk"></span></div>
+        <div class="no"><em>❌ 불공제</em><b id="nNo">-</b><span id="aNo"></span></div>
+        <div class="ck"><em>⚠️ 확인 필요</em><b id="nCk">-</b><span id="aCk"></span></div>
+      </div>
+      <div class="bar"><i id="bOk" style="background:#6FA8F0"></i><i id="bNo" style="background:#F08A6A"></i><i id="bCk" style="background:#F2C14E"></i></div>
+      <div class="btns">
+        <button class="b1" id="btnCsv">결과 CSV 내려받기</button>
+        <a class="b2" id="btnVat" href="/tools/vat/">부가세 계산하기 →</a>
+      </div>
+      <div class="sub2" id="vatTip" style="margin-top:10px"></div>
+    </div>
+    <div id="groups"></div>
+
+    <div class="box exc">
+      <h2>업종에 따라 달라지는 예외</h2>
+      <ul>
+        <li><b>옷·화장품을 떼어 파는 도소매업</b>이라면 백화점·의류·올리브영 결제도 상품 매입이라 공제돼요.</li>
+        <li><b>음식점</b>의 쌀·채소·고기 같은 면세 식자재는 카드 공제 대신 <b>의제매입세액공제</b>로 따로 받아요.</li>
+        <li><b>화물차·경차·9인승 이상 승합차</b>처럼 공제되는 차량이면 주유·주차·수리비도 공제돼요. 일반 승용차는 안 돼요.</li>
+        <li>통신비·전기·가스처럼 <b>세금계산서를 따로 받는 요금</b>은 카드로 또 넣으면 중복이에요.</li>
+        <li>식당·카페·호텔이라도 <b>거래처 접대</b>나 <b>개인 용도</b>면 불공제예요.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cta">
+    <b id="ctaT">카드 매입,<br>다해과장이 한 건씩 봐 드려요</b>
+    <p>세무법인 청담택스매니지먼트에 기장을 맡기시면, 담당 실무자 다해과장이 사업용 카드·현금영수증 매입을 <b>한 건씩</b> 확인해서 공제되는 것과 안 되는 것을 나눠 드려요. <b>확인이 필요한 결제</b>도 업종과 차량을 보고 정리해 드려요.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform" target="_blank" rel="noopener">기장·신고 상담 신청하기</a>
+    <a class="k" href="https://open.kakao.com/o/s9Iptnbf" target="_blank" rel="noopener">카톡으로 먼저 물어보기</a>
+    <div class="firm">기장·신고: 세무법인 청담택스매니지먼트 · 조지훈 세무사</div>
+  </div>
+
+  <div class="foot">다해노트 · 다해과장(이지해)<br>파일과 입력한 내용은 어디에도 저장·전송되지 않아요.<br>결과는 가맹점 이름과 업종으로 나눈 일반적인 추정치예요. 실제 공제 여부는 사업 관련성·업종·차량에 따라 달라지고, 신고는 세무사 확인이 필요해요.<br>판별 기준: 세무법인 카드 매입 정리 기준, 부가가치세법 제39조·제46조③·시행령 제88조⑤</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const comma=n=>Math.round(n).toLocaleString('ko-KR');
+function man(n){const neg=n<0;n=Math.abs(n);let s;if(n>=1e8){const e=Math.floor(n/1e8),m=Math.round((n%1e8)/1e4);s=e+'억'+(m?' '+m.toLocaleString('ko-KR')+'만':'')+'원';}else if(n>=1e4)s=Math.round(n/1e4).toLocaleString('ko-KR')+'만원';else s=Math.round(n).toLocaleString('ko-KR')+'원';return (neg?'-':'')+s;}
+const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),2400);}
+const num=v=>{if(typeof v==='number')return v;const s=String(v??'').replace(/[^0-9.\-]/g,'');return s?Number(s):NaN;};
+
+/* ===== 판별 규칙 (세무법인 카드 매입 정리 기준) ===== */
+const RULES=[
+ // ❌ 불공제
+ {g:'no',t:'세금·공과금·보험료 카드 납부',why:'세금·공과금·보험료는 부가세가 없어요',k:['국세','지방세','세금','금융결제원','공과금','과태료','범칙금','보험','손해보험','생명','국민건강보험','국민연금','근로복지공단','지로','위택스']},
+ {g:'no',t:'전기·가스·수도 요금',why:'보통 세금계산서로 따로 공제돼요. 카드로 또 넣으면 중복이에요',k:['한국전력','한전','도시가스','가스공사','상수도','수도사업']},
+ {g:'no',t:'백화점·면세점·아울렛',why:'개인 용도로 보는 경우가 많아 불공제로 정리해요',k:['백화점','신세계','현대백화점','롯데쇼핑','갤러리아','면세점','아울렛','더현대','ak플라자']},
+ {g:'no',t:'병원·약국',why:'의료는 면세라 부가세가 없어요',k:['병원','의원','약국','치과','한의원','동물병원','메디컬','의료','클리닉','검진','팜']},
+ {g:'no',t:'항공·철도·택시·버스',why:'여객운송은 공제가 안 돼요 (비용 처리는 가능)',k:['항공','대한항공','아시아나','제주항공','진에어','티웨이','에어부산','에어서울','코레일','한국철도','에스알','택시','카카오t','카카오모빌리티','우티','티머니','버스','고속버스','시외버스','지하철','교통카드','캐시비','레일플러스','srt','ktx']},
+ {g:'no',t:'미용·목욕·골프·학원',why:'목욕·이발·미용, 골프, 학원은 공제가 안 돼요',k:['미용','헤어','네일','피부관리','왁싱','속눈썹','사우나','찜질','목욕','스파랜드','이발','바버','골프','컨트리클럽','학원','키즈카페','방탈출','pc방','피씨방','노래연습장']},
+ {g:'no',t:'놀이공원·영화관 입장권',why:'입장권 발행 사업자는 공제가 안 돼요',k:['놀이공원','에버랜드','롯데월드','워터파크','cgv','메가박스','롯데시네마','영화관','시네마','박물관','미술관','티켓링크','인터파크티켓']},
+ {g:'no',t:'꽃·선물·상품권',why:'접대비로 보는 지출이라 불공제예요',k:['꽃집','꽃배달','플라워','화원','상품권','선물','기프트','gift']},
+ {g:'no',t:'면세 식자재',why:'쌀·채소·고기·과일은 면세라 부가세가 없어요',k:['정육','축산','식육','야채','채소','청과','과일','농산','수산','건어물','로컬푸드','하나로마트','농협','반찬','떡집','방앗간','계란']},
+ {g:'no',t:'해외 결제',why:'해외 가맹점은 국내 부가세가 없어요',k:['넷플릭스','netflix','openai','chatgpt','aws','amazonwebservices','amazon','paypal','itunes','apple.com','spotify','해외','zoom.us','midjourney','canva','notion','figma','github']},
+ {g:'no',t:'유흥주점',why:'유흥주점은 공제가 안 돼요',k:['유흥','단란주점','룸살롱','가라오케','나이트']},
+ // ⚠️ 확인 필요
+ {g:'ck',t:'배달앱·간편결제',why:'실제 가게 정보가 불분명해 홈택스가 불공제로 분류해요. 영수증으로 확인이 필요해요',k:['배달의민족','배민','우아한형제들','요기요','쿠팡이츠','위대한상상']},
+ {g:'ck',t:'주유·주차·차량',why:'화물차·경차·승합차처럼 공제되는 차량일 때만 공제돼요',k:['주유','sk에너지','gs칼텍스','s-oil','에쓰오일','오일뱅크','알뜰주유','충전소','lpg','전기차충전','주차','파킹','톨게이트','하이패스','도로공사','세차','카센터','정비','타이어','오토','모터스','자동차']},
+ {g:'ck',t:'의류·신발',why:'옷을 파는 업종이면 상품 매입이라 공제, 아니면 개인 용도로 봐요',k:['의류','패션','유니클로','자라','무신사','스파오','탑텐','아웃도어','신발','슈즈','나이키','아디다스','에이치앤엠','h&m']},
+ {g:'ck',t:'화장품',why:'화장품을 파는 업종이 아니면 개인 용도로 봐요',k:['올리브영','화장품','코스메틱','시코르','아리따움','이니스프리']},
+ {g:'ck',t:'가구·전자제품·인테리어',why:'금액이 크면 비품·고정자산으로 따로 정리해야 해요',k:['인테리어','가구','이케아','한샘','하이마트','전자랜드','삼성전자','lg전자','엘지전자','애플스토어','컴퓨터','노트북','디지털프라자','베스트샵']},
+ // ⭕ 공제
+ {g:'ok',t:'통신·인터넷',why:'공제돼요. 단 세금계산서를 따로 받는 요금이면 중복이니 하나만',k:['케이티','kt','lg유플러스','lgu+','엘지유플러스','유플러스','sk텔레콤','skt','에스케이텔레콤','sk브로드밴드','skb','통신']},
+ {g:'ok',t:'우체국·택배·퀵',why:'사업에 쓴 배송비는 공제돼요',k:['우체국','우정사업','대한통운','한진택배','로젠','롯데글로벌로지스','택배','퀵서비스','퀵']},
+ {g:'ok',t:'렌탈·국내 프로그램',why:'정수기·복합기 렌탈, 국내 프로그램 구독은 공제돼요',k:['렌탈','코웨이','정수기','복합기','신도리코','쿠쿠','sk매직','청호','소프트웨어','더존','네이버클라우드','카카오워크','호스팅','가비아','카페24','cafe24']},
+ {g:'ok',t:'호텔·숙박 (출장)',why:'업무 출장이면 공제돼요',k:['호텔','모텔','숙박','리조트','게스트하우스','펜션','스테이','야놀자','여기어때']},
+ {g:'ok',t:'식당·카페·제과',why:'직원 식사·업무 미팅이면 공제돼요. 접대는 불공제',k:['식당','음식','한식','중식','일식','양식','분식','중화','치킨','피자','버거','맥도날드','롯데리아','카페','커피','스타벅스','이디야','투썸','메가커피','메가엠지씨','빽다방','컴포즈','폴바셋','베이커리','제과','파리바게','뚜레쥬르','김밥','국밥','고기','갈비','삼겹','횟집','초밥','칼국수','냉면','도시락','본죽','호프','주점','포차','레스토랑','다이닝','뷔페','설렁탕','곱창','족발','보쌈']},
+ {g:'ok',t:'편의점·마트·다이소',why:'사업에 쓴 소모품은 공제돼요',k:['편의점','gs25','지에스25','cu','씨유','비지에프','세븐일레븐','코리아세븐','이마트24','이마트','홈플러스','롯데마트','코스트코','트레이더스','다이소','아성다이소','문구','오피스','알파','철물','마트']},
+ {g:'ok',t:'쿠팡·온라인쇼핑·결제대행',why:'사업용 물품이면 공제돼요. 홈택스가 불공제로 먼저 분류해도 공제로 바꿀 수 있어요',k:['쿠팡','11번가','십일번가','지마켓','g마켓','이베이코리아','옥션','네이버페이','네이버','스마트스토어','위메프','티몬','ssg','에스에스지','토스페이먼츠','이니시스','나이스페이','kcp','다날','페이코','카카오페이','결제대행','kg모빌리언스']},
+];
+const SHORT=/^[a-z0-9+&.\-]{1,3}$/;
+function matchRule(text){
+  const raw=String(text||'').toLowerCase(); const t=raw.replace(/\s+/g,'');
+  for(const r of RULES){ for(const k of r.k){
+    if(SHORT.test(k)){ const re=new RegExp('(^|[^a-z0-9])'+k.replace(/[+.\-&]/g,'\\$&')+'([^a-z0-9]|$)'); if(re.test(raw)) return r; }
+    else if(t.includes(k)) return r; } }
+  return null;
+}
+function judge(it){
+  const ty=String(it.type||'');
+  if(/면세/.test(ty)) return {g:'no',t:'면세 가맹점',why:'면세사업자와의 거래는 공제가 안 돼요'};
+  if(/간이/.test(ty) && !/세금계산서|발급/.test(ty)) return {g:'no',t:'간이과세 가맹점',why:'영수증만 주는 간이과세자와의 거래는 공제가 안 돼요'};
+  const r=matchRule(it.name) || matchRule((it.biz||'')+' '+(it.item||''));
+  if(r) return r;
+  if(!it.bizno && /[a-z]/i.test(it.name) && !/[가-힣]/.test(it.name)) return {g:'no',t:'해외 결제 (추정)',why:'사업자번호가 없는 영문 가맹점은 해외 결제로 보여요'};
+  return {g:'ck',t:'판별 못 한 가맹점',why:'이름만으로는 알 수 없어요. 무엇을 샀는지 확인이 필요해요'};
+}
+
+/* ===== 엑셀 읽기 ===== */
+const nh=s=>String(s??'').replace(/[\s()\[\]（）]/g,'').toLowerCase();
+function pick(hdr,inc,exc=[]){ for(const want of inc){ const i=hdr.findIndex(h=>h.includes(want)&&!exc.some(e=>h.includes(e))); if(i>=0) return i; } return -1; }
+function mapHeader(row){
+  const h=row.map(nh);
+  return {
+    name:pick(h,['가맹점명','가맹점상호','상호','사용처','이용처','가맹점'],['사업자','번호','유형','업종','업태']),
+    bizno:pick(h,['가맹점사업자번호','사업자등록번호','사업자번호']),
+    date:pick(h,['승인일자','거래일자','이용일자','사용일자','매입일자','승인일시','일자','날짜']),
+    type:pick(h,['가맹점유형','과세유형','사업자유형','유형'],['공제']),
+    biz:pick(h,['업태']),
+    item:pick(h,['업종','종목'],['코드']),
+    supply:pick(h,['공급가액']),
+    tax:pick(h,['세액','부가세','부가가치세'],['공제','비과세']),
+    total:pick(h,['합계','이용금액','결제금액','승인금액','사용금액','거래금액','금액'],['공급','세액','비과세','부가']),
+    ded:pick(h,['공제여부'])
+  };
+}
+function rowsToItems(rows){
+  let hi=-1,m=null;
+  for(let i=0;i<Math.min(rows.length,40);i++){ const mm=mapHeader(rows[i]||[]); if(mm.name>=0 && (mm.total>=0||mm.supply>=0)){hi=i;m=mm;break;} }
+  if(hi<0) return {err:'가맹점명과 금액 열을 찾지 못했어요. 홈택스 "매입세액 공제 확인/변경" 화면에서 내려받은 파일인지 확인해 주세요.'};
+  const items=[];
+  for(const r of rows.slice(hi+1)){
+    if(!r) continue; const name=String(r[m.name]??'').trim();
+    if(!name || /^(합계|총계|소계|계)$/.test(name.replace(/\s/g,''))) continue;
+    let total=m.total>=0?num(r[m.total]):NaN; const sup=m.supply>=0?num(r[m.supply]):NaN; let tax=m.tax>=0?num(r[m.tax]):NaN;
+    if(isNaN(total)) total=(sup||0)+(isNaN(tax)?0:tax);
+    if(!total) continue;
+    items.push({name, total, tax:isNaN(tax)?null:tax, supply:isNaN(sup)?null:sup, date:m.date>=0?fmtDate(r[m.date]):'', bizno:m.bizno>=0?String(r[m.bizno]??'').replace(/[^0-9]/g,''):'', type:m.type>=0?String(r[m.type]??''):'', biz:m.biz>=0?String(r[m.biz]??''):'', item:m.item>=0?String(r[m.item]??''):'', ded:m.ded>=0?String(r[m.ded]??''):''});
+  }
+  const found=Object.entries(m).filter(([k,v])=>v>=0).map(([k])=>({name:'가맹점명',bizno:'사업자번호',date:'날짜',type:'가맹점유형',biz:'업태',item:'업종',supply:'공급가액',tax:'세액',total:'합계',ded:'공제여부'}[k]));
+  return {items,found};
+}
+function fmtDate(v){ if(v instanceof Date) return v.toISOString().slice(0,10); if(typeof v==='number'&&v>30000&&v<60000){const d=new Date(Math.round((v-25569)*864e5));return d.toISOString().slice(0,10);} return String(v??'').trim(); }
+async function readFile(f){
+  $('fmsg').className='msg'; $('fmsg').textContent='읽는 중…';
+  try{
+    if(typeof XLSX==='undefined') throw new Error('엑셀 읽기 도구를 불러오지 못했어요. 인터넷 연결을 확인해 주세요.');
+    const buf=await f.arrayBuffer();
+    let wb; if(/\.csv$/i.test(f.name)){ let txt=new TextDecoder('utf-8').decode(buf); if(txt.includes('\uFFFD')) txt=new TextDecoder('euc-kr').decode(buf); wb=XLSX.read(txt,{type:'string'}); }
+    else wb=XLSX.read(buf,{type:'array',cellDates:true});
+    let best=null;
+    for(const sn of wb.SheetNames){ const rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:true,defval:''}); const r=rowsToItems(rows); if(!r.err && (!best||r.items.length>best.items.length)) best=r; if(!best&&r.err) best=best||null; }
+    if(!best){ $('fmsg').className='msg err'; $('fmsg').textContent='가맹점명과 금액 열을 찾지 못했어요. 홈택스 "매입세액 공제 확인/변경" 화면에서 내려받은 파일인지 확인해 주세요.'; return; }
+    if(!best.items.length){ $('fmsg').className='msg err'; $('fmsg').textContent='읽을 수 있는 결제 내역이 없어요.'; return; }
+    $('fmsg').className='msg okm'; $('fmsg').textContent=`✓ ${f.name} · ${best.items.length}건을 읽었어요 (찾은 열: ${best.found.join(', ')})`;
+    analyze(best.items,'file');
+  }catch(e){ $('fmsg').className='msg err'; $('fmsg').textContent='파일을 읽지 못했어요. '+(e.message||''); }
+}
+$('file').addEventListener('change',e=>{ const f=e.target.files[0]; if(f) readFile(f); e.target.value=''; });
+const dz=$('drop');
+['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('on');}));
+['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('on');}));
+dz.addEventListener('drop',e=>{ const f=e.dataTransfer.files[0]; if(f) readFile(f); });
+
+/* ===== 붙여넣기 ===== */
+$('btnPaste').addEventListener('click',()=>{
+  const items=[];
+  for(const line of $('paste').value.split(/\n/)){ const l=line.trim(); if(!l) continue;
+    const m=l.match(/^(.*?)[\s,\t]+([0-9][0-9,]*)\s*원?\s*$/); if(m){ const amt=num(m[2]); if(amt) items.push({name:m[1].replace(/[,\t]+$/,'').trim(),total:amt,tax:null}); } else items.push({name:l,total:0,tax:null}); }
+  if(!items.length){ toast('가맹점명과 금액을 넣어 주세요'); return; }
+  analyze(items,'paste');
+});
+
+/* ===== 예시 (가상 데이터) ===== */
+const SAMPLE=[
+ ['2026-10-02','김밥나라 예시점','일반과세자','음식점업','분식',8500],
+ ['2026-10-04','스타벅스 샘플점','일반과세자','음식점업','커피전문점',23400],
+ ['2026-10-06','다이소 예시점','일반과세자','소매업','생활용품',38000],
+ ['2026-10-07','쿠팡(주)','일반과세자','도소매','전자상거래',126000],
+ ['2026-10-08','KT 통신요금','일반과세자','통신업','이동통신',66000],
+ ['2026-10-10','한국철도공사','일반과세자','운수업','철도운송',59800],
+ ['2026-10-11','대한항공','일반과세자','운수업','항공운송',412000],
+ ['2026-10-12','신세계백화점 예시점','일반과세자','소매업','백화점',289000],
+ ['2026-10-13','온누리약국 샘플점','면세사업자','소매업','약국',15600],
+ ['2026-10-14','행복정육점','면세사업자','소매업','정육',87000],
+ ['2026-10-15','SK에너지 예시주유소','일반과세자','소매업','주유소',90000],
+ ['2026-10-16','올리브영 샘플점','일반과세자','소매업','화장품',42000],
+ ['2026-10-18','NETFLIX.COM','','','',17000],
+ ['2026-10-19','그린플라워','일반과세자','소매업','꽃',55000],
+ ['2026-10-20','우체국 예시점','일반과세자','통신업','우편',12400],
+ ['2026-10-21','코웨이(주)','일반과세자','임대업','정수기렌탈',39900],
+ ['2026-10-22','롯데호텔 예시','일반과세자','숙박업','호텔',198000],
+ ['2026-10-23','미소상회','간이과세자','소매업','잡화',24000],
+ ['2026-10-25','한빛상사','일반과세자','도매업','',176000],
+ ['2026-10-27','국세 카드납부(금융결제원)','','','',350000]
+];
+$('btnEx').addEventListener('click',()=>{
+  const items=SAMPLE.map(r=>{const total=r[5]; const tax=/면세|간이/.test(r[2])||!r[2]?0:Math.round(total/11); return {date:r[0],name:r[1],type:r[2],biz:r[3],item:r[4],total,tax,bizno:r[2]?'0000000000':''};});
+  $('fmsg').className='msg okm'; $('fmsg').textContent='✓ 가상의 가맹점 20건으로 보여 드려요';
+  analyze(items,'sample');
+});
+
+/* ===== 결과 ===== */
+let LAST=null;
+function analyze(items,src){
+  const res=items.map(it=>{ const j=judge(it); const tax=(it.tax!=null&&it.tax>0)?it.tax:(j.g==='no'&&/면세|간이|해외|세금/.test(j.t)?0:Math.round(it.total/11)); return {...it,g:j.g,t:j.t,why:j.why,vat:tax}; });
+  const S={ok:{n:0,a:0,v:0},no:{n:0,a:0,v:0},ck:{n:0,a:0,v:0}};
+  res.forEach(r=>{S[r.g].n++;S[r.g].a+=r.total;S[r.g].v+=r.vat;});
+  const all=S.ok.a+S.no.a+S.ck.a||1;
+  $('result').style.display='block';
+  $('rBig').innerHTML=man(S.ok.v)+'<small>공제 '+S.ok.n+'건 기준</small>';
+  $('rSub').innerHTML=S.ck.n?`⚠️ 확인 필요 ${S.ck.n}건이 사업용으로 확인되면 최대 <b>${man(S.ck.v)}</b>을 더 공제받을 수 있어요.`:'확인이 필요한 결제는 없어요.';
+  $('nOk').textContent=S.ok.n+'건'; $('aOk').textContent=man(S.ok.a);
+  $('nNo').textContent=S.no.n+'건'; $('aNo').textContent=man(S.no.a);
+  $('nCk').textContent=S.ck.n+'건'; $('aCk').textContent=man(S.ck.a);
+  $('bOk').style.width=S.ok.a/all*100+'%'; $('bNo').style.width=S.no.a/all*100+'%'; $('bCk').style.width=S.ck.a/all*100+'%';
+  $('vatTip').innerHTML=`부가세 계산기의 <b>사업용 카드·현금영수증 매입</b> 칸에 ⭕ 공제 합계 <b>${comma(S.ok.a)}원</b>을 넣어 보세요. (버튼을 누르면 금액이 복사돼요)`;
+  const G=[['ok','⭕ 공제','부가세 공제 대상으로 보여요. 사업에 쓴 게 맞는지만 한 번 더 확인하세요.'],['ck','⚠️ 확인 필요','업종·차량·무엇을 샀는지에 따라 달라져요. 다해과장이 한 건씩 봐 드리는 부분이에요.'],['no','❌ 불공제','부가세 공제가 안 되는 결제예요. 비용 처리는 따로 될 수 있어요.']];
+  $('groups').innerHTML=G.map(([g,title,desc])=>{ const list=res.filter(r=>r.g===g).sort((a,b)=>b.total-a.total); if(!list.length) return '';
+    const rows=list.map((r,i)=>`<div class="row"${i>=8?' data-more="1" style="display:none"':''}><div class="l"><b>${esc(r.name)}</b><span>${esc(r.t)} · ${esc(r.why)}${r.ded?` · 홈택스: ${esc(r.ded)}`:''}</span></div><div class="r">${comma(r.total)}원${r.date?`<span>${esc(r.date)}</span>`:''}</div></div>`).join('');
+    return `<details class="grp ${g}"${g!=='no'?' open':''}><summary><b>${title} ${list.length}건</b><span>${man(list.reduce((a,r)=>a+r.total,0))} ▾</span></summary><div class="gd">${desc}</div>${rows}${list.length>8?`<button class="more" data-g="${g}">${list.length-8}건 더 보기</button>`:''}</details>`; }).join('');
+  document.querySelectorAll('.more').forEach(b=>b.onclick=()=>{ b.parentElement.querySelectorAll('[data-more]').forEach(r=>r.style.display=''); b.remove(); });
+  $('ctaT').innerHTML=S.ck.n?`확인 필요 ${S.ck.n}건,<br>다해과장이 한 건씩 봐 드려요`:'카드 매입,<br>다해과장이 한 건씩 봐 드려요';
+  LAST={res,S};
+  if(src!=='init') $('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('btnCsv').addEventListener('click',()=>{
+  if(!LAST) return; const L={ok:'공제',no:'불공제',ck:'확인 필요'};
+  const lines=[['판별','승인일자','가맹점명','가맹점유형','업종','합계금액','예상 부가세','분류','이유'].join(',')];
+  LAST.res.forEach(r=>lines.push([L[r.g],r.date||'',r.name,r.type||'',[r.biz,r.item].filter(Boolean).join(' '),r.total,r.vat,r.t,r.why].map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')));
+  const blob=new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='카드내역_공제판별_다해노트.csv'; a.click(); toast('CSV를 내려받았어요');
+});
+$('btnVat').addEventListener('click',async e=>{ if(!LAST) return; try{ await navigator.clipboard.writeText(String(Math.round(LAST.S.ok.a))); toast('공제 합계를 복사했어요'); }catch(_){} });
+</script>
+</body>
+</html>
