@@ -63,7 +63,7 @@ svg{display:block}
 .foot{margin-top:28px;font-size:12px;color:#7C90A6;line-height:1.7;text-align:center}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#16324F;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:9}
 .toast.on{opacity:1}
-</style>
+.consult{display:block;margin-top:12px;background:#FF8A2B;color:#fff;text-align:center;padding:15px 10px;border-radius:14px;text-decoration:none;font-weight:900;font-size:16px;box-shadow:0 8px 20px rgba(255,138,43,.35)}.consult small{display:block;font-weight:500;font-size:12px;opacity:.9;margin-top:2px}</style>
 </head>
 <body>
 <div class="wrap">
@@ -131,6 +131,7 @@ svg{display:block}
     <h2>관계마다 꼭 확인할 포인트</h2>
     <div class="hint">그린 관계를 보고 자동으로 골랐어요. 일반적인 확인 항목이에요.</div>
     <div id="checks" style="margin-top:6px"></div>
+    <a id="consultBtn" class="consult" href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform" target="_blank" rel="noopener">📩 이 관계도로 다해과장에게 물어보기<small>결과가 신청서에 자동으로 적혀요 · 1분이면 끝</small></a>
   </div>
 
   <div class="cta">
@@ -147,6 +148,10 @@ svg{display:block}
 
 <script>
 const $=id=>document.getElementById(id);
+const CFORM='https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform';
+function consultUrl(msg, need){ const p=new URLSearchParams({usp:'pp_url','entry.620488139':msg,'entry.1819274449':'다해노트 사이트'}); if(need) p.append('entry.165701779',need); return CFORM+'?'+p.toString(); }
+function setConsult(msg, need){ const a=document.getElementById('consultBtn'); if(a) a.href=consultUrl(msg, need); }
+
 const TYPES={person:{ic:'👤',name:'사람',fill:'#FFF4EA',stroke:'#FF8A2B'},biz:{ic:'🏪',name:'개인사업자',fill:'#EAF2FD',stroke:'#2F6FD0'},corp:{ic:'🏢',name:'법인',fill:'#0B3D66',stroke:'#0B3D66',dark:1},branch:{ic:'📍',name:'지점',fill:'#EEF4FB',stroke:'#8DA0B5'},asset:{ic:'🏠',name:'건물',fill:'#E3F4EE',stroke:'#1E7A5C'}};
 const RT={own:{n:'지분',c:'#0B3D66',dash:''},run:{n:'운영',c:'#2F6FD0',dash:''},officer:{n:'대표·임원',c:'#7C90A6',dash:'6 4'},branch:{n:'지점',c:'#8DA0B5',dash:''},joint:{n:'공동사업',c:'#8E7CC3',dash:''},lease:{n:'임대',c:'#1E7A5C',dash:'6 4'},loan:{n:'대여',c:'#E86A92',dash:'6 4'},advance:{n:'가지급금',c:'#D9480F',dash:''},trade:{n:'거래',c:'#F2A33A',dash:'2 4'},work:{n:'근무',c:'#5BB5A2',dash:'2 4'}};
 const LAYER={person:0,corp:1,biz:1,branch:2,asset:2};
@@ -239,6 +244,7 @@ function checks(){
     if(sum>50) add('major'+c.id,'📊',`${c.n}: 대표·가족 지분 합계 ${sum}%`,'지분이 50%를 넘는 과점주주는 법인이 세금을 못 내면 대신 낼 책임(2차 납세의무)이 생길 수 있고, 지분을 더 사서 새로 과점주주가 되면 법인이 가진 부동산·차량에 대해 취득세(간주취득세)가 나올 수 있어요.');
     const corpOwn=owns.filter(r=>N(r.f)?.t==='corp'); if(corpOwn.length) add('chain'+c.id,'🏢',`${c.n}: 다른 법인이 지분을 갖고 있어요`,'법인끼리 지분이 엮이면 배당·거래·대여금이 모두 특수관계 거래가 돼요. 법인별 장부를 같은 기준으로 맞춰 두는 게 중요해요.'); });
   if(S.nodes.filter(n=>['biz','corp','branch'].includes(n.t)).length>=3) add('many','🗂️','사업장이 3곳 이상이에요','사업장마다 세무사무실·장부 기준이 다르면 사업장 사이 돈의 흐름이 끊겨 보여요. 한 곳에서 같은 기준으로 보면 전체 손익과 자금이 한 장으로 보여요.');
+  if(!S.ex){ const biz=S.nodes.filter(n=>['biz','corp','branch'].includes(n.t)).length; setConsult(`[사업장 관계도] 사업장 ${biz}곳, 관계 ${S.rels.length}개 / 확인 포인트: ${out.slice(0,4).map(o=>o.t).join(', ')}. 여러 사업장 장부를 한 곳에서 같이 봐 주셨으면 해요.`, '기장·세금 신고 (세무법인 상담 연결)'); }
   $('checks').innerHTML=out.length?out.map(o=>`<div class="item"><div class="ic">${o.ic}</div><div><b>${esc(o.t)}</b><small>${o.d}</small>${o.link?`<a href="${o.link.u}">→ ${o.link.t}</a>`:''}</div></div>`).join(''):'<div class="hint">관계를 이으면 확인할 포인트가 여기에 나와요.</div>';
 }
 /* ===== 이미지 저장 ===== */
