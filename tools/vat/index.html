@@ -90,7 +90,7 @@ details.help ul{margin:8px 0 2px 18px;font-size:13px;color:#4F6680;line-height:1
 .foot{margin-top:28px;font-size:12px;color:#7C90A6;line-height:1.7;text-align:center}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#16324F;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;pointer-events:none}
 .toast.on{opacity:1}
-</style>
+.consult{display:block;margin-top:12px;background:#FF8A2B;color:#fff;text-align:center;padding:15px 10px;border-radius:14px;text-decoration:none;font-weight:900;font-size:16px;box-shadow:0 8px 20px rgba(255,138,43,.35)}.consult small{display:block;font-weight:500;font-size:12px;opacity:.9;margin-top:2px}</style>
 </head>
 <body>
 <div class="wrap">
@@ -189,6 +189,7 @@ details.help ul{margin:8px 0 2px 18px;font-size:13px;color:#4F6680;line-height:1
       <button class="b1" id="btnImg">결과 이미지 저장</button>
       <button class="b2" id="btnShare">카톡으로 보내기</button>
     </div>
+    <a id="consultBtn" class="consult" href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform" target="_blank" rel="noopener">📩 이 결과로 다해과장에게 물어보기<small>결과가 신청서에 자동으로 적혀요 · 1분이면 끝</small></a>
   </div>
 
   <div class="box why">
@@ -221,6 +222,10 @@ details.help ul{margin:8px 0 2px 18px;font-size:13px;color:#4F6680;line-height:1
 
 <script>
 const $ = id => document.getElementById(id);
+const CFORM='https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform';
+function consultUrl(msg, need){ const p=new URLSearchParams({usp:'pp_url','entry.620488139':msg,'entry.1819274449':'다해노트 사이트'}); if(need) p.append('entry.165701779',need); return CFORM+'?'+p.toString(); }
+function setConsult(msg, need){ const a=document.getElementById('consultBtn'); if(a) a.href=consultUrl(msg, need); }
+
 const ids = ['sCard','sCash','sTax','sEtc','pTax','pCard','pOwn','pre'];
 const DEF = {sCard:120000000, sCash:8000000, sTax:0, sEtc:2000000, pTax:33000000, pCard:16500000, pOwn:3300000, pre:2600000};
 const RATE = 0.013, CAP = 10000000;
@@ -291,6 +296,7 @@ function calc(){
   if (corp) items.push({on:false, t:'법인은 카드매출 세액공제가 없어요.', d:'같은 매출이라도 개인사업자보다 부가세가 크게 나올 수 있어요.'});
   $('why').innerHTML = items.map(i=>`<div class="item ${i.on?'on':'off'}"><div class="ic">${i.on?'!':'✓'}</div><div>${i.t}${i.d?'<br><span style="font-size:13px;color:#7C90A6">'+i.d+'</span>':''}</div></div>`).join('');
   last={v,A,B,gap,perMonth,corp,sales};
+  setConsult(`[부가세 미리보기] ${corp?'법인':'개인'} / 예상 납부 약 ${man(B.final)} / 카드 매입을 챙기면 ${man(Math.max(0,gap))} 차이. 카드 매입이 빠짐없이 들어갔는지 확인받고 싶어요.`, '기장·세금 신고 (세무법인 상담 연결)');
 }
 
 ids.forEach(id=>$(id).addEventListener('input',e=>{ const n=parse(e.target.value); e.target.value=n?comma(n):''; calc(); }));
