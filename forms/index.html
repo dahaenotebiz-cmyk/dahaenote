@@ -79,7 +79,7 @@ h1{font-size:28px;font-weight:900;margin-top:22px;line-height:1.35}
   <div class="req">
     <b>찾는 양식이 없나요?</b>
     <p>필요한 양식 이름을 남겨 주시면 다해과장이 만들어서 블로그에 올려 드려요.</p>
-    <a href="https://open.kakao.com/o/s9Iptnbf" target="_blank" rel="noopener">카톡으로 양식 요청하기</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform?usp=pp_url&entry.620488139=%5B%EC%96%91%EC%8B%9D%20%EC%9A%94%EC%B2%AD%5D%20%ED%95%84%EC%9A%94%ED%95%9C%20%EC%96%91%EC%8B%9D%3A%20&entry.1819274449=%EB%8B%A4%ED%95%B4%EB%85%B8%ED%8A%B8%20%EC%82%AC%EC%9D%B4%ED%8A%B8" target="_blank" rel="noopener">양식 요청하기 (신청서 1분)</a>
   </div>
 
   <div class="tools">
@@ -130,7 +130,7 @@ function render(){
   let list=FORMS.filter(f=>(cat==='전체'||f.c===cat) && (!nq || norm(f.n+f.s+f.d+f.c).includes(nq)));
   if(nq) list.sort((a,b)=>(norm(b.n).includes(nq)-norm(a.n).includes(nq)));
   $('count').textContent = q ? `'${q}' 검색 결과 ${list.length}개` : `양식 ${list.length}개`;
-  if(!list.length){ $('list').innerHTML=`<div class="none">'${esc(q)}' 양식은 아직 없어요.<br>아래 <b>카톡으로 양식 요청하기</b>로 알려 주시면 만들어 드릴게요.</div>`; return; }
+  if(!list.length){ $('list').innerHTML=`<div class="none">'${esc(q)}' 양식은 아직 없어요.<br>아래 <b>양식 요청하기</b>로 알려 주시면 만들어 드릴게요.</div>`; return; }
   $('list').innerHTML=list.map(f=>{ const url=f.url||('https://blog.naver.com/form88896/'+f.id); const isNew=(now-new Date(f.dt).getTime())<1000*60*60*24*30;
     return `<a class="item" href="${url}" target="_blank" rel="noopener"><div class="h"><b>${hl(f.n,q)}${isNew?'<span class="new">NEW</span>':''}</b><span class="ft ${f.f==='워드'?'w':'h'}">${f.f}</span></div><p>${esc(f.d)}</p><div class="m"><span class="c">${f.c}</span><span class="go">블로그에서 받기 →</span></div></a>`; }).join('');
 }
