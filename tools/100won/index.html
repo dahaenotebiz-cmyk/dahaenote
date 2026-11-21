@@ -63,7 +63,7 @@ h1{font-size:28px;font-weight:900;margin-top:22px;line-height:1.35}
 .foot{margin-top:28px;font-size:12px;color:#7C90A6;line-height:1.7;text-align:center}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#16324F;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;pointer-events:none}
 .toast.on{opacity:1}
-</style>
+.consult{display:block;margin-top:12px;background:#FF8A2B;color:#fff;text-align:center;padding:15px 10px;border-radius:14px;text-decoration:none;font-weight:900;font-size:16px;box-shadow:0 8px 20px rgba(255,138,43,.35)}.consult small{display:block;font-weight:500;font-size:12px;opacity:.9;margin-top:2px}</style>
 </head>
 <body>
 <div class="wrap">
@@ -115,6 +115,7 @@ h1{font-size:28px;font-weight:900;margin-top:22px;line-height:1.35}
       <button class="b1" id="btnImg">결과 이미지 저장</button>
       <button class="b2" id="btnShare">카톡으로 보내기</button>
     </div>
+    <a id="consultBtn" class="consult" href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform" target="_blank" rel="noopener">📩 매달 우리 가게 숫자로 받아 보기<small>결과가 신청서에 자동으로 적혀요 · 1분이면 끝</small></a>
   </div>
 
   <div class="box how">
@@ -138,6 +139,10 @@ h1{font-size:28px;font-weight:900;margin-top:22px;line-height:1.35}
 
 <script>
 const $=id=>document.getElementById(id);
+const CFORM='https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform';
+function consultUrl(msg, need){ const p=new URLSearchParams({usp:'pp_url','entry.620488139':msg,'entry.1819274449':'다해노트 사이트'}); if(need) p.append('entry.165701779',need); return CFORM+'?'+p.toString(); }
+function setConsult(msg, need){ const a=document.getElementById('consultBtn'); if(a) a.href=consultUrl(msg, need); }
+
 const ids=['sales','cogs','labor','rent','fee','etc'];
 const DEF={sales:33000000,cogs:11000000,labor:8000000,rent:3300000,fee:1500000,etc:3000000};
 const COL={tax:'#9DB4CC',cogs:'#FF8A2B',labor:'#F2C14E',rent:'#8E7CC3',fee:'#E86A92',etc:'#5BB5A2',me:'#FFFFFF',loss:'#FF6B6B'};
@@ -182,6 +187,7 @@ function calc(){
   const me2=s2-tax2-v.cogs-v.labor-v.rent-v.fee*1.05-v.etc;
   $('rTips').innerHTML=`💡 손님 수는 그대로, 가격만 <b>5%</b> 올리면 한 달에 <b>${man(me2-me)}</b> 더 남아요.`+(vatOn?`<br>💡 100원 중 <b>${per.find(p=>p.k==='tax')?.n||0}원</b>은 부가세예요. 신고 달에 놀라지 않으려면 <a href="/tools/vat/">이번 부가세 미리보기</a>도 해 보세요.`:'');
   last={v,per,me,meWon,bep,biggest};
+  setConsult(`[100원 계산기] 월 매출 ${man(v.sales)} / 100원 중 사장님 손에 ${meWon}원 (월 ${man(me)}) / 가장 큰 비용: ${NAME[biggest.k]}. 매달 장부 숫자로 정리해서 받아 보고 싶어요.`, '손익을 매달 한 장으로 보고 싶어요');
 }
 ids.forEach(id=>$(id).addEventListener('input',e=>{const n=parse(e.target.value);e.target.value=n?comma(n):'';calc();}));
 $('vat').addEventListener('change',calc);
