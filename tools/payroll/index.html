@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-89TE7XCBJS"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-89TE7XCBJS',{page_location:location.href});
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a||!a.href)return;var h=a.href;
+if(h.indexOf('docs.google.com/forms')>-1)gtag('event','generate_lead',{method:'consult_form',page:location.pathname});
+else if(h.indexOf('open.kakao.com')>-1)gtag('event','generate_lead',{method:'kakao',page:location.pathname});
+else if(h.indexOf('tel:')===0)gtag('event','generate_lead',{method:'phone',page:location.pathname});});</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>급여 변동 한 장 (무료 엑셀) | 세무·노무 사무실에 급여자료 한 번에 | 다해노트</title>
+<meta name="description" content="입사·퇴사·시급·식대 변경만 적으면 세무·노무 사무실에 보낼 급여자료 문장이 자동으로 만들어지는 무료 엑셀 양식. 요식업·자영업 사장님·점장용.">
+<meta property="og:title" content="급여 변동 한 장 (무료 엑셀) | 다해노트">
+<meta property="og:description" content="세무·노무 사무실에 같은 말 두 번 하지 마세요. 그달 바뀐 것만 한 장에.">
+<meta property="og:image" content="https://dahaenote.com/tools/payroll/preview.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;color:#16324F;background:linear-gradient(160deg,#F5FAFF,#E3EFFB 60%,#D3E5F7);min-height:100vh;word-break:keep-all;-webkit-text-size-adjust:100%}
+.wrap{max-width:560px;margin:0 auto;padding:20px 18px 60px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.top a{color:#2F6FD0;text-decoration:none;font-size:14px;font-weight:700}
+.top span{font-size:12px;font-weight:700;letter-spacing:3px;color:#2F6FD0}
+.badge{display:inline-block;margin-top:20px;background:#FFF1E5;color:#E06A0B;font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 12px}
+h1{font-size:27px;font-weight:900;margin-top:10px;line-height:1.35}
+.lead{color:#4F6680;font-size:15px;margin-top:8px;line-height:1.6}
+.box{background:#fff;border-radius:20px;padding:20px 18px;box-shadow:0 8px 24px rgba(11,61,102,.08);margin-top:16px}
+.box h2{font-size:17px;font-weight:900}
+.box h2 .n{display:inline-block;width:24px;height:24px;border-radius:50%;background:#0B3D66;color:#fff;font-size:13px;text-align:center;line-height:24px;margin-right:6px;vertical-align:2px}
+.hint{font-size:13px;color:#7C90A6;margin-top:6px;line-height:1.6}
+.path{background:#F5F9FE;border-radius:12px;padding:10px 12px;margin-top:10px;font-size:13px;color:#34506E;line-height:1.7}
+.path b{color:#0B3D66}
+.safe{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:13px;color:#1E7A5C;font-weight:700;background:#E9F7F1;border-radius:10px;padding:8px 10px}
+.drop{display:block;margin-top:12px;border:2px dashed #9DBBE0;border-radius:16px;padding:22px 12px;text-align:center;cursor:pointer;background:#F8FBFF}
+.drop.on{border-color:#0B3D66;background:#EEF4FB}
+.drop b{display:block;font-size:16px;color:#0B3D66}
+.drop span{display:block;font-size:12.5px;color:#7C90A6;margin-top:4px}
+.drop input{display:none}
+.or{text-align:center;font-size:13px;color:#8DA0B5;margin:14px 0 4px}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:14px;font:700 15px 'Noto Sans KR',sans-serif;cursor:pointer;margin-top:10px}
+.btn.ex{background:#FF8A2B;color:#fff}
+.btn.sub{background:#EEF4FB;color:#0B3D66}
+textarea{width:100%;min-height:120px;margin-top:10px;border:1.5px solid #CFE0F2;border-radius:14px;padding:12px;font:500 14px 'Noto Sans KR',sans-serif;color:#16324F;background:#F8FBFF;outline:none;resize:vertical}
+textarea:focus{border-color:#2F6FD0;background:#fff}
+details.paste{margin-top:6px}
+details.paste summary{font-size:14px;color:#2F6FD0;font-weight:700;cursor:pointer;padding:6px 0}
+.msg{font-size:13.5px;margin-top:10px;line-height:1.6}
+.msg.err{color:#C2410C}.msg.okm{color:#1E7A5C}
+#result{display:none}
+.res{background:#0B3D66;color:#fff;border-radius:22px;padding:22px 20px;margin-top:18px;box-shadow:0 14px 30px rgba(11,61,102,.25)}
+.res .k{font-size:14px;color:#BFD6EE}
+.res .big{font-size:38px;font-weight:900;margin-top:2px;letter-spacing:-.5px}
+.res .big small{font-size:15px;font-weight:500;margin-left:6px;color:#BFD6EE}
+.res .sub2{font-size:13.5px;color:#DCEAF8;margin-top:4px;line-height:1.6}
+.res .sub2 b{color:#FFD3AE}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.g3 div{border-radius:14px;padding:12px 8px;text-align:center}
+.g3 .ok{background:#2F6FD0}.g3 .no{background:#B64A2A}.g3 .ck{background:#C78A13}
+.g3 em{display:block;font-style:normal;font-size:12.5px;opacity:.9}
+.g3 b{display:block;font-size:20px;margin-top:2px}
+.g3 span{display:block;font-size:12px;opacity:.9;margin-top:2px}
+.bar{display:flex;height:12px;border-radius:999px;overflow:hidden;margin-top:14px;background:rgba(255,255,255,.15)}
+.bar i{display:block;height:100%}
+.res .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.res .btns button,.res .btns a{border:0;border-radius:14px;padding:13px 8px;font:700 14.5px 'Noto Sans KR',sans-serif;cursor:pointer;text-align:center;text-decoration:none;display:block}
+.b1{background:#fff;color:#0B3D66}.b2{background:#FF8A2B;color:#fff}
+.grp{background:#fff;border-radius:20px;margin-top:14px;box-shadow:0 8px 24px rgba(11,61,102,.08);overflow:hidden}
+.grp summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;justify-content:space-between;align-items:center}
+.grp summary::-webkit-details-marker{display:none}
+.grp summary b{font-size:16px}
+.grp summary span{font-size:13.5px;color:#4F6680}
+.grp.ok summary{border-left:6px solid #2F6FD0}.grp.no summary{border-left:6px solid #B64A2A}.grp.ck summary{border-left:6px solid #C78A13}
+.grp .gd{padding:0 18px 6px;font-size:13px;color:#4F6680;line-height:1.6}
+.row{display:flex;justify-content:space-between;gap:10px;padding:11px 18px;border-top:1px solid #EEF4FB}
+.row .l{min-width:0}
+.row .l b{display:block;font-size:14.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .l span{display:block;font-size:12px;color:#7C90A6;margin-top:2px;line-height:1.45}
+.row .r{flex:none;text-align:right;font-size:14px;font-weight:700}
+.row .r span{display:block;font-size:11.5px;color:#8DA0B5;font-weight:500}
+.more{display:block;width:100%;border:0;background:#F5F9FE;color:#2F6FD0;font:700 13.5px 'Noto Sans KR',sans-serif;padding:12px;cursor:pointer}
+.exc{font-size:14px;line-height:1.75;color:#34506E}
+.exc li{margin:4px 0 0 18px}
+.cta{margin-top:18px;background:#fff;border:2px solid #0B3D66;border-radius:20px;padding:20px 18px}
+.cta > b{font-size:17px;color:#0B3D66;line-height:1.45;display:block}
+.cta p{font-size:14px;color:#4F6680;margin-top:6px;line-height:1.65}
+.cta p b{color:#0B3D66}
+.cta a{display:block;margin-top:12px;background:#0B3D66;color:#fff;text-align:center;padding:15px;border-radius:14px;text-decoration:none;font-weight:700;font-size:15.5px}
+.cta a.k{background:#FEE500;color:#191919;margin-top:8px}
+.cta .firm{font-size:11.5px;color:#8DA0B5;margin-top:10px;text-align:center}
+.foot{margin-top:28px;font-size:12px;color:#7C90A6;line-height:1.7;text-align:center}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#16324F;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:9}
+.toast.on{opacity:1}
+.consult{display:block;margin-top:12px;background:#FF8A2B;color:#fff;text-align:center;padding:15px 10px;border-radius:14px;text-decoration:none;font-weight:900;font-size:16px;box-shadow:0 8px 20px rgba(255,138,43,.35)}.consult small{display:block;font-weight:500;font-size:12px;opacity:.9;margin-top:2px}
+.pv{width:100%;border-radius:12px;border:1px solid #D6E3F3;margin-top:12px}
+.ul{margin:10px 0 0 18px;font-size:14.5px;color:#34506E;line-height:1.75}
+.dl{display:block;margin-top:14px;background:#1E7B45;color:#fff;text-align:center;padding:16px;border-radius:14px;text-decoration:none;font-weight:900;font-size:16.5px;box-shadow:0 8px 20px rgba(30,123,69,.3)}
+.dl small{display:block;font-weight:500;font-size:12px;opacity:.9;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a href="/">← 다해노트</a><span>DAHAE NOTE</span></div>
+  <span class="badge">무료 엑셀 양식</span>
+  <h1>급여자료,<br>세무·노무 사무실에 한 번에</h1>
+  <p class="lead">"노무사무실엔 수정본, 세무사무실엔 이전 자료…" 같은 말 두 번 하지 마세요.<br>그달 <b>바뀐 것만</b> 한 장에 적으면, 보낼 문장이 자동으로 만들어져요.</p>
+  <div class="box">
+    <h2><span class="n">1</span>이렇게 써요 (한 달 5분)</h2>
+    <ul class="ul">
+      <li>직원 이름·고용형태·입사일·시급 또는 월급·식대를 처음 한 번 적어요.</li>
+      <li>근무시간·주휴·연장수당은 <b>출퇴근 앱 결과</b>를 그대로 옮겨요.</li>
+      <li>입사·퇴사는 날짜만 적으면 자동 표시, 시급·식대 변경은 골라서 체크해요.</li>
+      <li>아래 <b>보낼 문장</b>을 복사해 세무·노무 사무실에 <b>같은 날</b> 보내요.</li>
+    </ul>
+    <img class="pv" src="/tools/payroll/preview.png" alt="급여 변동 한 장 예시 화면 (가상 데이터)">
+    <div class="hint">화면 속 매장·직원·금액은 모두 가상 예시예요.</div>
+    <a class="dl" id="dlBtn" href="/tools/payroll/dahaenote_payroll_change.xlsx" download>📥 무료 엑셀 내려받기<small>회원가입 없이 바로 · 엑셀·구글 시트에서 열려요</small></a>
+    <div class="safe">🔒 주민등록번호·계좌번호는 적지 않는 양식이에요</div>
+  </div>
+  <div class="cta">
+    <b>급여자료 정리부터 기장까지<br>세무법인에서 함께 챙겨 드려요</b>
+    <p>세무법인 청담택스매니지먼트에 기장을 맡기시면, 담당 세무사 검토 아래 급여자료·원천세 신고 일정까지 함께 관리해 드려요.</p>
+    <a id="consultBtn" class="consult" href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform?usp=pp_url&entry.620488139=%5B%EA%B8%89%EC%97%AC%20%EB%B3%80%EB%8F%99%20%ED%95%9C%20%EC%9E%A5%5D%20%EA%B8%89%EC%97%AC%EC%9E%90%EB%A3%8C%20%EC%A0%95%EB%A6%AC%C2%B7%EA%B8%B0%EC%9E%A5%20%EC%83%81%EB%8B%B4%EC%9D%84%20%EB%B0%9B%EA%B3%A0%20%EC%8B%B6%EC%96%B4%EC%9A%94.&entry.1819274449=%EB%8B%A4%ED%95%B4%EB%85%B8%ED%8A%B8%20%EC%82%AC%EC%9D%B4%ED%8A%B8" target="_blank" rel="noopener">세무법인 상담 신청하기<small>신청서 1분 · 연락드려요</small></a>
+    <a class="k" href="tel:01096894856" style="background:#fff;color:#0B3D66;border:2px solid #0B3D66">📞 전화로 먼저 물어보기 010-9689-4856</a>
+    <div class="firm">기장·신고: 세무법인 청담택스매니지먼트 · 담당 조지훈 세무사</div>
+  </div>
+  <div class="foot">다해노트 · 세무법인 청담택스매니지먼트 이지해 과장<br>이 양식은 자료 전달용 정리표예요. 급여·주휴수당·4대보험의 최종 계산과 신고는 담당 세무·노무 사무실이 확인해요.</div>
+</div>
+<script>document.getElementById('dlBtn').addEventListener('click',function(){try{gtag('event','file_download',{file_name:'payroll_change',page:location.pathname});}catch(e){}});</script>
+</body>
+</html>
