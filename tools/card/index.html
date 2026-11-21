@@ -134,7 +134,7 @@ details.paste summary{font-size:14px;color:#2F6FD0;font-weight:700;cursor:pointe
         <a class="b2" id="btnVat" href="/tools/vat/">부가세 계산하기 →</a>
       </div>
       <div class="sub2" id="vatTip" style="margin-top:10px"></div>
-      <a id="consultBtn" class="consult" href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform" target="_blank" rel="noopener">📩 확인 필요 건, 다해과장에게 물어보기<small>결과가 신청서에 자동으로 적혀요 · 1분이면 끝</small></a>
+      <a id="consultBtn" class="consult" href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform" target="_blank" rel="noopener">📩 확인 필요 건, 세무법인에 물어보기<small>결과가 신청서에 자동으로 적혀요 · 1분이면 끝</small></a>
     </div>
     <div id="groups"></div>
 
@@ -151,14 +151,14 @@ details.paste summary{font-size:14px;color:#2F6FD0;font-weight:700;cursor:pointe
   </div>
 
   <div class="cta">
-    <b id="ctaT">카드 매입,<br>다해과장이 한 건씩 봐 드려요</b>
-    <p>세무법인 청담택스매니지먼트에 기장을 맡기시면, 담당 실무자 다해과장이 사업용 카드·현금영수증 매입을 <b>한 건씩</b> 확인해서 공제되는 것과 안 되는 것을 나눠 드려요. <b>확인이 필요한 결제</b>도 업종과 차량을 보고 정리해 드려요.</p>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform" target="_blank" rel="noopener">기장·신고 상담 신청하기</a>
+    <b id="ctaT">카드 매입,<br>세무법인에서 한 건씩 확인해 드려요</b>
+    <p>세무법인 청담택스매니지먼트에 기장을 맡기시면, 담당 세무사 검토 아래 실무 담당 이지해 과장이 사업용 카드·현금영수증 매입을 <b>한 건씩</b> 확인해서 공제되는 것과 안 되는 것을 나눠 드려요. <b>확인이 필요한 결제</b>도 업종과 차량을 보고 정리해 드려요.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform" target="_blank" rel="noopener">세무법인 상담 신청하기</a>
     <a class="k" href="https://open.kakao.com/o/s9Iptnbf" target="_blank" rel="noopener">카톡으로 먼저 물어보기</a>
-    <div class="firm">기장·신고: 세무법인 청담택스매니지먼트 · 조지훈 세무사</div>
+    <div class="firm">기장·신고: 세무법인 청담택스매니지먼트 · 담당 조지훈 세무사</div>
   </div>
 
-  <div class="foot">다해노트 · 다해과장(이지해)<br>파일과 입력한 내용은 어디에도 저장·전송되지 않아요.<br>결과는 가맹점 이름과 업종으로 나눈 일반적인 추정치예요. 실제 공제 여부는 사업 관련성·업종·차량에 따라 달라지고, 신고는 세무사 확인이 필요해요.<br>판별 기준: 세무법인 카드 매입 정리 기준, 부가가치세법 제39조·제46조③·시행령 제88조⑤</div>
+  <div class="foot">다해노트 · 세무법인 청담택스매니지먼트 이지해 과장(세무사 아님)<br>파일과 입력한 내용은 어디에도 저장·전송되지 않아요.<br>결과는 가맹점 이름과 업종으로 나눈 일반적인 추정치예요. 실제 공제 여부는 사업 관련성·업종·차량에 따라 달라지고, 신고는 세무사 확인이 필요해요.<br>판별 기준: 세무법인 카드 매입 정리 기준, 부가가치세법 제39조·제46조③·시행령 제88조⑤</div>
 </div>
 <div class="toast" id="toast"></div>
 
@@ -334,12 +334,12 @@ function analyze(items,src){
   $('nCk').textContent=S.ck.n+'건'; $('aCk').textContent=man(S.ck.a);
   $('bOk').style.width=S.ok.a/all*100+'%'; $('bNo').style.width=S.no.a/all*100+'%'; $('bCk').style.width=S.ck.a/all*100+'%';
   $('vatTip').innerHTML=`부가세 계산기의 <b>사업용 카드·현금영수증 매입</b> 칸에 ⭕ 공제 합계 <b>${comma(S.ok.a)}원</b>을 넣어 보세요. (버튼을 누르면 금액이 복사돼요)`;
-  const G=[['ok','⭕ 공제','부가세 공제 대상으로 보여요. 사업에 쓴 게 맞는지만 한 번 더 확인하세요.'],['ck','⚠️ 확인 필요','업종·차량·무엇을 샀는지에 따라 달라져요. 다해과장이 한 건씩 봐 드리는 부분이에요.'],['no','❌ 불공제','부가세 공제가 안 되는 결제예요. 비용 처리는 따로 될 수 있어요.']];
+  const G=[['ok','⭕ 공제','부가세 공제 대상으로 보여요. 사업에 쓴 게 맞는지만 한 번 더 확인하세요.'],['ck','⚠️ 확인 필요','업종·차량·무엇을 샀는지에 따라 달라져요. 세무사 검토가 필요한 부분이에요.'],['no','❌ 불공제','부가세 공제가 안 되는 결제예요. 비용 처리는 따로 될 수 있어요.']];
   $('groups').innerHTML=G.map(([g,title,desc])=>{ const list=res.filter(r=>r.g===g).sort((a,b)=>b.total-a.total); if(!list.length) return '';
     const rows=list.map((r,i)=>`<div class="row"${i>=8?' data-more="1" style="display:none"':''}><div class="l"><b>${esc(r.name)}</b><span>${esc(r.t)} · ${esc(r.why)}${r.ded?` · 홈택스: ${esc(r.ded)}`:''}</span></div><div class="r">${comma(r.total)}원${r.date?`<span>${esc(r.date)}</span>`:''}</div></div>`).join('');
     return `<details class="grp ${g}"${g!=='no'?' open':''}><summary><b>${title} ${list.length}건</b><span>${man(list.reduce((a,r)=>a+r.total,0))} ▾</span></summary><div class="gd">${desc}</div>${rows}${list.length>8?`<button class="more" data-g="${g}">${list.length-8}건 더 보기</button>`:''}</details>`; }).join('');
   document.querySelectorAll('.more').forEach(b=>b.onclick=()=>{ b.parentElement.querySelectorAll('[data-more]').forEach(r=>r.style.display=''); b.remove(); });
-  $('ctaT').innerHTML=S.ck.n?`확인 필요 ${S.ck.n}건,<br>다해과장이 한 건씩 봐 드려요`:'카드 매입,<br>다해과장이 한 건씩 봐 드려요';
+  $('ctaT').innerHTML=S.ck.n?`확인 필요 ${S.ck.n}건,<br>세무법인에서 한 건씩 확인해 드려요`:'카드 매입,<br>세무법인에서 한 건씩 확인해 드려요';
   LAST={res,S};
   try{ setConsult(`[카드 공제 판별기] 공제 ${S.ok.n}건 ${man(S.ok.a)} / 불공제 ${S.no.n}건 / 확인 필요 ${S.ck.n}건 ${man(S.ck.a)}. 확인 필요 건이 공제되는지 봐 주셨으면 해요.`, '기장·세금 신고 (세무법인 상담 연결)'); }catch(e){}
   if(src!=='init') $('result').scrollIntoView({behavior:'smooth',block:'start'});
