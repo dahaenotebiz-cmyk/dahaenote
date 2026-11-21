@@ -85,7 +85,7 @@ details.paste summary{font-size:14px;color:#2F6FD0;font-weight:700;cursor:pointe
 .foot{margin-top:28px;font-size:12px;color:#7C90A6;line-height:1.7;text-align:center}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#16324F;color:#fff;padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:9}
 .toast.on{opacity:1}
-</style>
+.consult{display:block;margin-top:12px;background:#FF8A2B;color:#fff;text-align:center;padding:15px 10px;border-radius:14px;text-decoration:none;font-weight:900;font-size:16px;box-shadow:0 8px 20px rgba(255,138,43,.35)}.consult small{display:block;font-weight:500;font-size:12px;opacity:.9;margin-top:2px}</style>
 </head>
 <body>
 <div class="wrap">
@@ -126,6 +126,7 @@ details.paste summary{font-size:14px;color:#2F6FD0;font-weight:700;cursor:pointe
         <a class="b2" id="btnVat" href="/tools/vat/">부가세 계산하기 →</a>
       </div>
       <div class="sub2" id="vatTip" style="margin-top:10px"></div>
+      <a id="consultBtn" class="consult" href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform" target="_blank" rel="noopener">📩 확인 필요 건, 다해과장에게 물어보기<small>결과가 신청서에 자동으로 적혀요 · 1분이면 끝</small></a>
     </div>
     <div id="groups"></div>
 
@@ -156,6 +157,10 @@ details.paste summary{font-size:14px;color:#2F6FD0;font-weight:700;cursor:pointe
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 <script>
 const $=id=>document.getElementById(id);
+const CFORM='https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform';
+function consultUrl(msg, need){ const p=new URLSearchParams({usp:'pp_url','entry.620488139':msg,'entry.1819274449':'다해노트 사이트'}); if(need) p.append('entry.165701779',need); return CFORM+'?'+p.toString(); }
+function setConsult(msg, need){ const a=document.getElementById('consultBtn'); if(a) a.href=consultUrl(msg, need); }
+
 const comma=n=>Math.round(n).toLocaleString('ko-KR');
 function man(n){const neg=n<0;n=Math.abs(n);let s;if(n>=1e8){const e=Math.floor(n/1e8),m=Math.round((n%1e8)/1e4);s=e+'억'+(m?' '+m.toLocaleString('ko-KR')+'만':'')+'원';}else if(n>=1e4)s=Math.round(n/1e4).toLocaleString('ko-KR')+'만원';else s=Math.round(n).toLocaleString('ko-KR')+'원';return (neg?'-':'')+s;}
 const esc=s=>String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -328,6 +333,7 @@ function analyze(items,src){
   document.querySelectorAll('.more').forEach(b=>b.onclick=()=>{ b.parentElement.querySelectorAll('[data-more]').forEach(r=>r.style.display=''); b.remove(); });
   $('ctaT').innerHTML=S.ck.n?`확인 필요 ${S.ck.n}건,<br>다해과장이 한 건씩 봐 드려요`:'카드 매입,<br>다해과장이 한 건씩 봐 드려요';
   LAST={res,S};
+  try{ setConsult(`[카드 공제 판별기] 공제 ${S.ok.n}건 ${man(S.ok.a)} / 불공제 ${S.no.n}건 / 확인 필요 ${S.ck.n}건 ${man(S.ck.a)}. 확인 필요 건이 공제되는지 봐 주셨으면 해요.`, '기장·세금 신고 (세무법인 상담 연결)'); }catch(e){}
   if(src!=='init') $('result').scrollIntoView({behavior:'smooth',block:'start'});
 }
 $('btnCsv').addEventListener('click',()=>{
