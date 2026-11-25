@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-89TE7XCBJS"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-89TE7XCBJS',{page_location:location.href});
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a||!a.href)return;var h=a.href;
+if(h.indexOf('docs.google.com/forms')>-1)gtag('event','generate_lead',{method:'consult_form',page:location.pathname});
+else if(h.indexOf('cheongdam-fee')>-1)gtag('event','generate_lead',{method:'fee_quote',page:location.pathname});
+else if(h.indexOf('tel:')===0)gtag('event','generate_lead',{method:'phone',page:location.pathname});});</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3분 장부 건강 진단 | 우리 가게 돈 관리 점수 | 다해노트</title><meta name="description" content="질문 10개에 네·아니요로 답하면 우리 가게 돈 관리 점수와 먼저 고칠 3가지가 나와요. 매달 장부 150곳을 마감하는 세무법인 과장이 만든 진단.">
+<meta property="og:title" content="3분 장부 건강 진단 | 다해노트"><meta property="og:description" content="질문 10개에 네·아니요로 답하면 우리 가게 돈 관리 점수와 먼저 고칠 3가지가 나와요. 매달 장부 150곳을 마감하는 세무법인 과장이 만든 진단."><meta property="og:image" content="https://dahaenote.com/og.png">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;color:#16324F;background:linear-gradient(160deg,#F7FBFF,#E6F0FB 60%,#D9E9F8);min-height:100vh;word-break:keep-all;-webkit-text-size-adjust:100%}
+.wrap{max-width:560px;margin:0 auto;padding:20px 18px 100px}
+.top{display:flex;justify-content:space-between;align-items:center}.top a{color:#2F6FD0;text-decoration:none;font-size:14px;font-weight:700}.top span{font-size:12px;font-weight:700;letter-spacing:3px;color:#2F6FD0}
+.badge{display:inline-block;margin-top:20px;background:#FFF1E5;color:#E06A0B;font-size:12.5px;font-weight:700;border-radius:999px;padding:5px 12px}
+h1{font-size:27px;font-weight:900;margin-top:10px;line-height:1.35}h1 em{font-style:normal;color:#2F6FD0}
+.lead{color:#4F6680;font-size:15px;margin-top:8px;line-height:1.6}
+.box{background:#fff;border-radius:20px;padding:20px 18px;box-shadow:0 8px 24px rgba(22,50,79,.08);margin-top:16px;border:1px solid #E1ECF8}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:15px;font:900 16px 'Noto Sans KR',sans-serif;cursor:pointer;margin-top:12px;text-align:center;text-decoration:none}
+.btn.or{background:#FF8A2B;color:#fff}.btn.bl{background:#2F6FD0;color:#fff}.btn.lt{background:#EEF5FD;color:#16324F;border:1.5px solid #C9DBF0}
+.foot{margin-top:28px;font-size:12px;color:#7C90A6;line-height:1.7;text-align:center}
+</style><style>
+.q{background:#fff;border:1px solid #E1ECF8;border-radius:16px;padding:14px 14px 12px;margin-top:10px;transition:.25s}
+.q.done{border-color:#BFD6EE;background:#FAFCFF}
+.qt{font-size:15.5px;font-weight:700;line-height:1.5;display:flex;gap:10px}.qt b{flex:none;width:26px;height:26px;border-radius:50%;background:#EEF5FD;color:#2F6FD0;font-size:13px;text-align:center;line-height:26px}
+.yn{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.yn button{border:1.5px solid #C9DBF0;background:#fff;border-radius:12px;padding:10px;font:700 15px 'Noto Sans KR';color:#34506E;cursor:pointer}
+.yn button.on[data-v="1"]{background:#2F6FD0;border-color:#2F6FD0;color:#fff}.yn button.on[data-v="0"]{background:#FFF1E4;border-color:#FF8A2B;color:#E06A0B}
+.prog{position:sticky;top:0;z-index:5;background:rgba(247,251,255,.92);backdrop-filter:blur(6px);padding:10px 0;margin-top:14px}
+.prog .t{font-size:13px;color:#4F6680;font-weight:700}.prog .bar{height:8px;border-radius:9px;background:#DCE8F5;margin-top:6px;overflow:hidden}.prog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2F6FD0,#FF8A2B);transition:.3s}
+#res{display:none}
+.score{text-align:center;padding:26px 18px;background:#fff;border-radius:22px;border:1.5px solid #C9DBF0;box-shadow:0 14px 30px rgba(22,50,79,.10);margin-top:18px}
+.score .k{font-size:14px;color:#4F6680;font-weight:700}.score .n{font-size:64px;font-weight:900;color:#16324F;line-height:1.1}.score .n small{font-size:22px;color:#7C90A6}
+.score .lv{display:inline-block;margin-top:6px;border-radius:999px;padding:6px 14px;font-weight:900;font-size:15px}
+.lv.g{background:#E5F6EE;color:#1E7A5C}.lv.m{background:#FFF6D8;color:#9A6B00}.lv.r{background:#FFECE5;color:#C2410C}
+.score p{margin-top:10px;font-size:14.5px;color:#34506E;line-height:1.6}
+.fix{background:#fff;border-radius:18px;border:1px solid #E1ECF8;padding:16px;margin-top:10px}
+.fix h3{font-size:16.5px;font-weight:900}.fix h3 span{color:#FF8A2B;margin-right:6px}
+.fix p{font-size:14px;color:#4F6680;line-height:1.65;margin-top:6px}.fix a{display:inline-block;margin-top:8px;font-size:14px;font-weight:700;color:#2F6FD0;text-decoration:none}
+</style></head><body><div class="wrap">
+<div class="top"><a href="/">← 다해노트</a><span>DAHAE NOTE</span></div>
+<span class="badge">회원가입 없이 3분 · 입력 내용은 저장되지 않아요</span>
+<h1>우리 가게 돈 관리,<br><em>몇 점</em>일까요?</h1>
+<p class="lead">세무법인에서 매달 장부 150곳을 마감하며 본 '돈이 새는 가게'의 공통점을 질문 10개로 만들었어요. 네·아니요로만 답해 주세요.</p>
+<div class="prog"><div class="t" id="pt">0 / 10</div><div class="bar"><i id="pb"></i></div></div>
+<div class="q" data-i="0"><div class="qt"><b>1</b>매출이 들어오는 통장과 세금 낼 돈을 모아 두는 통장을 나눠 쓰고 있어요</div><div class="yn"><button type="button" data-v="1">네</button><button type="button" data-v="0">아니요</button></div></div><div class="q" data-i="1"><div class="qt"><b>2</b>매달 한 번은 매출·비용·남은 돈을 숫자로 확인해요</div><div class="yn"><button type="button" data-v="1">네</button><button type="button" data-v="0">아니요</button></div></div><div class="q" data-i="2"><div class="qt"><b>3</b>사업에 쓰는 돈은 사업용 카드로만 결제해요</div><div class="yn"><button type="button" data-v="1">네</button><button type="button" data-v="0">아니요</button></div></div><div class="q" data-i="3"><div class="qt"><b>4</b>카드 내역·현금영수증을 달마다 모아 두고 있어요</div><div class="yn"><button type="button" data-v="1">네</button><button type="button" data-v="0">아니요</button></div></div><div class="q" data-i="4"><div class="qt"><b>5</b>직원·알바 급여는 계좌이체로 주고 기록이 남아요</div><div class="yn"><button type="button" data-v="1">네</button><button type="button" data-v="0">아니요</button></div></div><div class="q" data-i="5"><div class="qt"><b>6</b>모든 직원·알바와 근로계약서를 썼어요</div><div class="yn"><button type="button" data-v="1">네</button><button type="button" data-v="0">아니요</button></div></div><div class="q" data-i="6"><div class="qt"><b>7</b>다음 달 나갈 큰돈(월세·급여·세금) 날짜를 미리 알고 있어요</div><div class="yn"><button type="button" data-v="1">네</button><button type="button" data-v="0">아니요</button></div></div><div class="q" data-i="7"><div class="qt"><b>8</b>생활비와 사업 지출을 섞지 않아요</div><div class="yn"><button type="button" data-v="1">네</button><button type="button" data-v="0">아니요</button></div></div><div class="q" data-i="8"><div class="qt"><b>9</b>세무사무실에서 받은 신고서를 한 번은 읽어 봐요</div><div class="yn"><button type="button" data-v="1">네</button><button type="button" data-v="0">아니요</button></div></div><div class="q" data-i="9"><div class="qt"><b>10</b>개업·직원 채용·확장 같은 큰 결정 전에 숫자를 먼저 계산해 봐요</div><div class="yn"><button type="button" data-v="1">네</button><button type="button" data-v="0">아니요</button></div></div>
+<button class="btn or" id="go" type="button">내 점수 보기</button>
+<div id="res">
+<div class="score"><div class="k">우리 가게 돈 관리 점수</div><div class="n"><span id="sc">0</span><small>/100</small></div><span class="lv" id="lv"></span><p id="lm"></p></div>
+<div id="fixes"></div>
+<a class="btn or" id="cs" href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform?usp=pp_url&entry.1819274449=%EB%8B%A4%ED%95%B4%EB%85%B8%ED%8A%B8%20%EC%82%AC%EC%9D%B4%ED%8A%B8" target="_blank" rel="noopener">우리 가게 상황으로 상담 신청하기</a>
+<a class="btn lt" href="tel:01096894856">📞 전화로 물어보기 010-9689-4856</a>
+<button class="btn lt" id="share" type="button">🔗 이 진단 친구 사장님께 보내기</button>
+</div>
+<div class="foot">다해노트 · 세무법인 청담택스매니지먼트 이지해 과장<br>기장·신고: 세무법인 청담택스매니지먼트 · 담당 조지훈 세무사<br>결과는 일반적인 안내이며 개별 세무 판단이 아니에요.</div></div>
+<script>
+var QS=[["매출이 들어오는 통장과 세금 낼 돈을 모아 두는 통장을 나눠 쓰고 있어요","통장 나누기","매출 통장 하나에 다 섞이면 부가세 달에 돈이 비어요. 세금 통장 하나만 따로 만들어 매출이 들어올 때마다 일정 비율을 옮겨 두세요.","/tools/vat/","이번 부가세 미리보기"],["매달 한 번은 매출·비용·남은 돈을 숫자로 확인해요","월 1회 숫자 보기","1년에 한 번 신고 때만 보면 이미 늦어요. 매달 매출·큰 비용 3개·남은 돈만 한 장에 적어 보세요.","/tools/100won/","100원 팔면 얼마 남나"],["사업에 쓰는 돈은 사업용 카드로만 결제해요","사업용 카드 쓰기","개인 카드와 섞이면 공제 받을 매입이 빠지기 쉬워요. 개인사업자는 홈택스에 사업용 카드를 등록해 두면 내역이 자동으로 모여요.","/tools/card/","카드 공제 판별기"],["카드 내역·현금영수증을 달마다 모아 두고 있어요","증빙 달마다 모으기","신고 직전에 몰아서 찾으면 꼭 빠지는 게 생겨요. 카드사에 “부가세 신고용 이용내역 엑셀”을 요청하면 한 번에 받을 수 있어요.","/tools/card/","카드 공제 판별기"],["직원·알바 급여는 계좌이체로 주고 기록이 남아요","급여 기록 남기기","현금으로 주면 인건비로 인정받기 어렵고 원천세 신고도 꼬여요. 급여는 이체하고 메모에 이름·월을 남겨 두세요.","/forms/","급여·근로계약 양식"],["모든 직원·알바와 근로계약서를 썼어요","근로계약서 쓰기","근로계약서가 없으면 과태료 대상이 될 수 있어요. 시급·근무시간·휴게시간이 바뀌면 다시 쓰세요.","/forms/","근로계약서 양식"],["다음 달 나갈 큰돈(월세·급여·세금) 날짜를 미리 알고 있어요","돈 나가는 날 미리 보기","통장 잔고만 보면 빠듯한 날을 못 봐요. 월세·급여·카드값·세금 날짜를 달력에 먼저 적어 두세요.","/calendar/","세금 일정 달력"],["생활비와 사업 지출을 섞지 않아요","생활비 분리","섞이면 실제로 남는 돈이 안 보여요. 대표님 월급처럼 매달 정해진 날 정해진 금액만 생활비로 옮기세요.","/tools/100won/","100원 팔면 얼마 남나"],["세무사무실에서 받은 신고서를 한 번은 읽어 봐요","신고서 3줄 읽기","맨 아래 숫자만 보지 말고 매출 합계·매입 차감계·납부할 세액 3줄만 확인해 보세요. 궁금한 건 담당 사무실에 바로 물어보세요.","/tools/vat/","부가세 미리보기"],["개업·직원 채용·확장 같은 큰 결정 전에 숫자를 먼저 계산해 봐요","결정 전 계산","사람 한 명이면 월급 말고도 4대보험·퇴직금이 더 나가요. 큰 결정 전에 한 달 고정비가 얼마나 늘지 먼저 계산해 보세요.","/start/","개업 체크리스트"]];var CFB="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform?usp=pp_url&entry.1819274449=%EB%8B%A4%ED%95%B4%EB%85%B8%ED%8A%B8%20%EC%82%AC%EC%9D%B4%ED%8A%B8";var ans={};
+document.querySelectorAll('.q').forEach(function(q){q.querySelectorAll('button').forEach(function(b){b.onclick=function(){q.querySelectorAll('button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');ans[q.dataset.i]=+b.dataset.v;q.classList.add('done');q.style.borderColor='';var n=Object.keys(ans).length;document.getElementById('pt').textContent=n+' / 10';document.getElementById('pb').style.width=(n*10)+'%';var nx=q.nextElementSibling;if(nx&&nx.classList.contains('q')&&!nx.classList.contains('done')){setTimeout(function(){nx.scrollIntoView({behavior:'smooth',block:'center'})},180)}}})});
+document.getElementById('go').onclick=function(){var n=Object.keys(ans).length;if(n<10){var f=[].slice.call(document.querySelectorAll('.q')).filter(function(q){return !q.classList.contains('done')})[0];f.scrollIntoView({behavior:'smooth',block:'center'});f.style.borderColor='#FF8A2B';return}
+var s=0,no=[];for(var i=0;i<10;i++){if(ans[i])s+=10;else no.push(i)}
+var res=document.getElementById('res');res.style.display='block';var el=document.getElementById('sc');var c=0;var t=setInterval(function(){c+=2;if(c>=s){c=s;clearInterval(t)}el.textContent=c},18);
+var lv=document.getElementById('lv'),lm=document.getElementById('lm');
+if(s>=80){lv.className='lv g';lv.textContent='튼튼해요';lm.textContent='돈 관리 기본이 잘 잡혀 있어요. 아래 남은 것만 챙기면 신고철이 훨씬 편해져요.'}
+else if(s>=50){lv.className='lv m';lv.textContent='보통이에요';lm.textContent='기본은 있지만 새는 곳이 몇 군데 있어요. 아래 3가지부터 하나씩 고쳐 보세요.'}
+else{lv.className='lv r';lv.textContent='지금 손볼 때예요';lm.textContent='숫자가 아니라 감으로 버티고 계실 수 있어요. 아래 3가지만 고쳐도 통장이 덜 마를 거예요.'}
+var top=no.slice(0,3);var h='';if(!top.length){h='<div class="fix"><h3><span>👏</span>10개 모두 네!</h3><p>지금처럼 매달 숫자를 보시면 돼요. 매달 1일 세금 일정 메일로 날짜만 챙기세요.</p><a href="/">다해노트 도구함 보기 →</a></div>'}
+top.forEach(function(i,k){var q=QS[i];h+='<div class="fix"><h3><span>'+(k+1)+'</span>'+q[1]+'</h3><p>'+q[2]+'</p><a href="'+q[3]+'?utm_source=check">'+q[4]+' →</a></div>'});
+document.getElementById('fixes').innerHTML=h;
+var msg='[3분 장부 건강 진단] '+s+'점 / 먼저 고칠 것: '+(top.map(function(i){return QS[i][1]}).join(', ')||'없음');
+document.getElementById('cs').href=CFB+'&entry.620488139='+encodeURIComponent(msg);
+try{gtag('event','tool_use',{tool:'check',score:s})}catch(e){}
+setTimeout(function(){res.scrollIntoView({behavior:'smooth'})},120)};
+document.getElementById('share').onclick=function(){var u='https://dahaenote.com/check/?utm_source=share';if(navigator.share){navigator.share({title:'3분 장부 건강 진단',text:'우리 가게 돈 관리 점수 확인해 보세요',url:u})}else{navigator.clipboard.writeText(u);this.textContent='링크를 복사했어요'}};
+</script>
+</body></html>
