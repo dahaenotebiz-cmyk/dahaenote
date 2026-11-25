@@ -216,5 +216,12 @@ $('btnImg').addEventListener('click',async()=>{if(!last)return;await document.fo
   const a=document.createElement('a');a.download='100원_계산결과.png';a.href=c.toDataURL('image/png');a.click();toast('이미지를 저장했어요');});
 load();calc();
 </script>
+
+<!-- 빠른 연락 버튼 (2026-11-25) -->
+<style>#qc{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:9999;width:calc(100% - 24px);max-width:480px;display:flex;gap:6px;padding:7px;background:#fff;border:1.5px solid #D6E4F3;border-radius:16px;box-shadow:0 8px 24px rgba(22,50,79,.16);font-family:'Noto Sans KR',sans-serif}
+#qc a{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;height:44px;border-radius:11px;font-size:14.5px;font-weight:700;text-decoration:none;white-space:nowrap}
+#qc .q1{background:#F3F8FE;color:#16324F;border:1.5px solid #C9DBF0}#qc .q2{background:#03C75A;color:#fff}#qc .q3{background:#FF8A2B;color:#fff;flex:1.25}
+body{padding-bottom:84px!important}@media print{#qc{display:none}}</style>
+<div id="qc"><a class="q1" href="tel:01096894856">📞 전화</a><a class="q2" href="https://talk.naver.com/W8WSHU1" target="_blank" rel="noopener" onclick="try{gtag('event','generate_lead',{method:'talktalk',page:location.pathname})}catch(e){}">💬 톡톡</a><a class="q3" href="https://docs.google.com/forms/d/e/1FAIpQLSeA7ttgsoYLODeBgrKjZz6mYSFmJhpiciCo7N3n1YZT-D1X8w/viewform?usp=pp_url&entry.1819274449=%EB%8B%A4%ED%95%B4%EB%85%B8%ED%8A%B8%20%EC%82%AC%EC%9D%B4%ED%8A%B8" target="_blank" rel="noopener">📝 상담 신청</a></div>
 </body>
 </html>
